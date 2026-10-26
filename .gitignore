@@ -1,0 +1,20 @@
+# Môi trường ảo
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+
+# Bí mật và file tạm
+.env
+*.log
+*.tmp
