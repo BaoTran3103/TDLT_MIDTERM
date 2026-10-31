@@ -13,11 +13,17 @@ class Ui_MainScreen(object):
     def setupUi(self, MainScreen):
         MainScreen.setObjectName("MainScreen")
         MainScreen.resize(1440, 900)
-        MainScreen.setStyleSheet("/* Main Application Styling */\n"
-"QMainWindow {\n"
-"    background-color: #F8F8EB;\n"
+        MainScreen.setStyleSheet("/* ==========================================================================\n"
+"   GLOBAL APP STYLING (Mac Native Typography & Eco Bites Palette)\n"
+"   Colors: #ADBF15 (Primary Lime), #000000 (Black), #F8F8EB (Cream), #F4A46D (Peach)\n"
+"   ========================================================================== */\n"
+"\n"
+"* {\n"
+"    font-family: \"SF Pro Display\", \"SF Pro Text\", \"Helvetica Neue\", \"Segoe UI\", Arial, sans-serif;\n"
+"    color: #111827;\n"
 "}\n"
-"QWidget#centralwidget {\n"
+"\n"
+"QMainWindow, QWidget#centralwidget {\n"
 "    background-color: #F8F8EB;\n"
 "}\n"
 "\n"
@@ -31,13 +37,12 @@ class Ui_MainScreen(object):
 "/* Header Text */\n"
 "QLabel#lbl_header_title {\n"
 "    color: #000000;\n"
-"    font-size: 28px;\n"
+"    font-size: 26px;\n"
 "    font-weight: 800;\n"
-"    font-family: -apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"Segoe UI\", sans-serif;\n"
 "}\n"
 "QLabel#lbl_header_subtitle {\n"
 "    color: #6B7280;\n"
-"    font-size: 14px;\n"
+"    font-size: 13px;\n"
 "    font-weight: 500;\n"
 "}\n"
 "\n"
@@ -54,30 +59,51 @@ class Ui_MainScreen(object):
 "    background-color: #FFFFFF;\n"
 "    color: #4B5563;\n"
 "    font-weight: 700;\n"
-"    font-size: 13px;\n"
+"    font-size: 12px;\n"
 "    border: none;\n"
 "    border-bottom: 2px solid #F3F4F6;\n"
-"    padding: 8px 4px;\n"
+"    padding: 10px 4px;\n"
 "}\n"
 "QTableWidget#tbl_mon_hoc::item {\n"
 "    border-bottom: 1px solid #F3F4F6;\n"
-"    padding: 6px;\n"
+"    padding: 4px;\n"
 "}\n"
 "\n"
-"/* Inputs and Buttons */\n"
+"/* Universal LineEdit */\n"
 "QLineEdit {\n"
 "    background-color: #FFFFFF;\n"
 "    border: 1.5px solid #E5E7EB;\n"
-"    border-radius: 8px;\n"
+"    border-radius: 9px;\n"
 "    padding: 6px 12px;\n"
 "    font-size: 13px;\n"
 "    color: #111827;\n"
 "}\n"
 "QLineEdit:focus {\n"
 "    border: 1.5px solid #ADBF15;\n"
+"    background-color: #FCFCF7;\n"
 "}\n"
 "\n"
-"/* Add Course Button */\n"
+"/* Pill Mode Buttons (Segmented Switch: Hệ 10 vs Hệ 4) */\n"
+"QPushButton#btn_he_10, QPushButton#btn_he_4 {\n"
+"    border-radius: 17px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 700;\n"
+"    padding: 7px 18px;\n"
+"    border: 1.5px solid #E5E7EB;\n"
+"    background-color: #FFFFFF;\n"
+"    color: #4B5563;\n"
+"}\n"
+"QPushButton#btn_he_10:hover, QPushButton#btn_he_4:hover {\n"
+"    border-color: #ADBF15;\n"
+"    color: #ADBF15;\n"
+"}\n"
+"QPushButton#btn_he_10:checked, QPushButton#btn_he_4:checked {\n"
+"    background-color: #000000;\n"
+"    border-color: #000000;\n"
+"    color: #FFFFFF;\n"
+"}\n"
+"\n"
+"/* Action Buttons */\n"
 "QPushButton#btn_them_mon {\n"
 "    background-color: #FFFFFF;\n"
 "    border: 1.5px solid #E5E7EB;\n"
@@ -89,7 +115,7 @@ class Ui_MainScreen(object):
 "}\n"
 "QPushButton#btn_them_mon:hover {\n"
 "    border: 1.5px solid #ADBF15;\n"
-"    color: #727F09;\n"
+"    color: #637007;\n"
 "    background-color: #F8F8EB;\n"
 "}\n"
 "QPushButton#btn_xoa_mon {\n"
@@ -106,11 +132,11 @@ class Ui_MainScreen(object):
 "    border-color: #DC2626;\n"
 "}\n"
 "\n"
-"/* Calculate Button */\n"
+"/* Primary CTA Button */\n"
 "QPushButton#btn_tinh_gpa {\n"
 "    background-color: #ADBF15;\n"
 "    color: #000000;\n"
-"    font-size: 15px;\n"
+"    font-size: 14px;\n"
 "    font-weight: 800;\n"
 "    border: none;\n"
 "    border-radius: 22px;\n"
@@ -123,17 +149,16 @@ class Ui_MainScreen(object):
 "    background-color: #8A9C10;\n"
 "}\n"
 "\n"
-"/* Right Card Elements */\n"
+"/* Right Card Typography */\n"
 "QLabel#lbl_tieu_de_gpa {\n"
 "    color: #111827;\n"
-"    font-size: 16px;\n"
+"    font-size: 15px;\n"
 "    font-weight: 700;\n"
 "}\n"
 "QLabel#lbl_gpa_hien_tai {\n"
 "    color: #ADBF15;\n"
 "    font-size: 64px;\n"
 "    font-weight: 800;\n"
-"    font-family: -apple-system, BlinkMacSystemFont, \"SF Pro Display\", sans-serif;\n"
 "}\n"
 "QLabel#lbl_trang_thai_gpa {\n"
 "    color: #111827;\n"
@@ -143,13 +168,6 @@ class Ui_MainScreen(object):
 "QLabel#lbl_dong_vien {\n"
 "    color: #6B7280;\n"
 "    font-size: 12px;\n"
-"}\n"
-"\n"
-"/* Grading Scale Boxes */\n"
-"QFrame.scale_box {\n"
-"    background-color: #FFFFFF;\n"
-"    border: 1px solid #E5E7EB;\n"
-"    border-radius: 8px;\n"
 "}\n"
 "\n"
 "/* Tip Frame */\n"
@@ -167,16 +185,16 @@ class Ui_MainScreen(object):
         self.centralwidget = QtWidgets.QWidget(parent=MainScreen)
         self.centralwidget.setObjectName("centralwidget")
         self.main_vertical_layout = QtWidgets.QVBoxLayout(self.centralwidget)
-        self.main_vertical_layout.setContentsMargins(32, 24, 32, 24)
-        self.main_vertical_layout.setSpacing(20)
+        self.main_vertical_layout.setContentsMargins(32, 20, 32, 20)
+        self.main_vertical_layout.setSpacing(18)
         self.main_vertical_layout.setObjectName("main_vertical_layout")
         self.header_layout = QtWidgets.QHBoxLayout()
-        self.header_layout.setSpacing(16)
+        self.header_layout.setSpacing(14)
         self.header_layout.setObjectName("header_layout")
         self.lbl_header_icon = QtWidgets.QLabel(parent=self.centralwidget)
-        self.lbl_header_icon.setMinimumSize(QtCore.QSize(52, 52))
-        self.lbl_header_icon.setMaximumSize(QtCore.QSize(52, 52))
-        self.lbl_header_icon.setStyleSheet("background-color: #0E1E2F; border-radius: 14px; color: #FFFFFF; font-size: 26px; qproperty-alignment: AlignCenter;")
+        self.lbl_header_icon.setMinimumSize(QtCore.QSize(50, 50))
+        self.lbl_header_icon.setMaximumSize(QtCore.QSize(50, 50))
+        self.lbl_header_icon.setStyleSheet("background-color: #000000; border-radius: 14px; color: #FFFFFF; font-size: 24px;")
         self.lbl_header_icon.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lbl_header_icon.setObjectName("lbl_header_icon")
         self.header_layout.addWidget(self.lbl_header_icon)
@@ -194,7 +212,7 @@ class Ui_MainScreen(object):
         self.header_layout.addItem(spacerItem)
         self.main_vertical_layout.addLayout(self.header_layout)
         self.body_layout = QtWidgets.QHBoxLayout()
-        self.body_layout.setSpacing(24)
+        self.body_layout.setSpacing(22)
         self.body_layout.setObjectName("body_layout")
         self.left_column_layout = QtWidgets.QVBoxLayout()
         self.left_column_layout.setSpacing(16)
@@ -207,8 +225,32 @@ class Ui_MainScreen(object):
         self.card_courses_layout.setContentsMargins(24, 20, 24, 20)
         self.card_courses_layout.setSpacing(14)
         self.card_courses_layout.setObjectName("card_courses_layout")
+        self.courses_top_bar = QtWidgets.QHBoxLayout()
+        self.courses_top_bar.setObjectName("courses_top_bar")
+        self.lbl_courses_title = QtWidgets.QLabel(parent=self.card_courses)
+        self.lbl_courses_title.setStyleSheet("font-size: 15px; font-weight: 700; color: #111827;")
+        self.lbl_courses_title.setObjectName("lbl_courses_title")
+        self.courses_top_bar.addWidget(self.lbl_courses_title)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.courses_top_bar.addItem(spacerItem1)
+        self.lbl_chon_he = QtWidgets.QLabel(parent=self.card_courses)
+        self.lbl_chon_he.setStyleSheet("font-size: 12px; font-weight: 600; color: #6B7280;")
+        self.lbl_chon_he.setObjectName("lbl_chon_he")
+        self.courses_top_bar.addWidget(self.lbl_chon_he)
+        self.btn_he_10 = QtWidgets.QPushButton(parent=self.card_courses)
+        self.btn_he_10.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.btn_he_10.setCheckable(True)
+        self.btn_he_10.setChecked(True)
+        self.btn_he_10.setObjectName("btn_he_10")
+        self.courses_top_bar.addWidget(self.btn_he_10)
+        self.btn_he_4 = QtWidgets.QPushButton(parent=self.card_courses)
+        self.btn_he_4.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.btn_he_4.setCheckable(True)
+        self.btn_he_4.setObjectName("btn_he_4")
+        self.courses_top_bar.addWidget(self.btn_he_4)
+        self.card_courses_layout.addLayout(self.courses_top_bar)
         self.tbl_mon_hoc = QtWidgets.QTableWidget(parent=self.card_courses)
-        self.tbl_mon_hoc.setColumnCount(5)
+        self.tbl_mon_hoc.setColumnCount(6)
         self.tbl_mon_hoc.setObjectName("tbl_mon_hoc")
         self.tbl_mon_hoc.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
@@ -221,6 +263,8 @@ class Ui_MainScreen(object):
         self.tbl_mon_hoc.setHorizontalHeaderItem(3, item)
         item = QtWidgets.QTableWidgetItem()
         self.tbl_mon_hoc.setHorizontalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tbl_mon_hoc.setHorizontalHeaderItem(5, item)
         self.card_courses_layout.addWidget(self.tbl_mon_hoc)
         self.table_btn_layout = QtWidgets.QHBoxLayout()
         self.table_btn_layout.setSpacing(12)
@@ -235,12 +279,12 @@ class Ui_MainScreen(object):
         self.btn_xoa_mon.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.btn_xoa_mon.setObjectName("btn_xoa_mon")
         self.table_btn_layout.addWidget(self.btn_xoa_mon)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.table_btn_layout.addItem(spacerItem1)
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.table_btn_layout.addItem(spacerItem2)
         self.card_courses_layout.addLayout(self.table_btn_layout)
         self.left_column_layout.addWidget(self.card_courses)
         self.card_scale = QtWidgets.QFrame(parent=self.centralwidget)
-        self.card_scale.setMinimumSize(QtCore.QSize(0, 110))
+        self.card_scale.setMinimumSize(QtCore.QSize(0, 115))
         self.card_scale.setMaximumSize(QtCore.QSize(16777215, 125))
         self.card_scale.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.card_scale.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
@@ -441,13 +485,13 @@ class Ui_MainScreen(object):
         self.body_layout.addLayout(self.left_column_layout)
         self.card_summary = QtWidgets.QFrame(parent=self.centralwidget)
         self.card_summary.setMinimumSize(QtCore.QSize(380, 0))
-        self.card_summary.setMaximumSize(QtCore.QSize(440, 16777215))
+        self.card_summary.setMaximumSize(QtCore.QSize(430, 16777215))
         self.card_summary.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.card_summary.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.card_summary.setObjectName("card_summary")
         self.card_summary_layout = QtWidgets.QVBoxLayout(self.card_summary)
-        self.card_summary_layout.setContentsMargins(28, 28, 28, 28)
-        self.card_summary_layout.setSpacing(16)
+        self.card_summary_layout.setContentsMargins(26, 26, 26, 26)
+        self.card_summary_layout.setSpacing(15)
         self.card_summary_layout.setObjectName("card_summary_layout")
         self.lbl_tieu_de_gpa = QtWidgets.QLabel(parent=self.card_summary)
         self.lbl_tieu_de_gpa.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -484,8 +528,8 @@ class Ui_MainScreen(object):
         self.lbl_txt_tong_tin_chi.setStyleSheet("color: #4B5563; font-size: 13px; font-weight: 500;")
         self.lbl_txt_tong_tin_chi.setObjectName("lbl_txt_tong_tin_chi")
         self.stat_credits_layout.addWidget(self.lbl_txt_tong_tin_chi)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.stat_credits_layout.addItem(spacerItem2)
+        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.stat_credits_layout.addItem(spacerItem3)
         self.lbl_tong_tin_chi = QtWidgets.QLabel(parent=self.card_summary)
         self.lbl_tong_tin_chi.setStyleSheet("color: #111827; font-size: 15px; font-weight: 700;")
         self.lbl_tong_tin_chi.setObjectName("lbl_tong_tin_chi")
@@ -504,8 +548,8 @@ class Ui_MainScreen(object):
         self.lbl_txt_tong_diem.setStyleSheet("color: #4B5563; font-size: 13px; font-weight: 500;")
         self.lbl_txt_tong_diem.setObjectName("lbl_txt_tong_diem")
         self.stat_points_layout.addWidget(self.lbl_txt_tong_diem)
-        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.stat_points_layout.addItem(spacerItem3)
+        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.stat_points_layout.addItem(spacerItem4)
         self.lbl_tong_diem = QtWidgets.QLabel(parent=self.card_summary)
         self.lbl_tong_diem.setStyleSheet("color: #111827; font-size: 15px; font-weight: 700;")
         self.lbl_tong_diem.setObjectName("lbl_tong_diem")
@@ -524,8 +568,8 @@ class Ui_MainScreen(object):
         self.lbl_txt_thang_diem.setStyleSheet("color: #4B5563; font-size: 13px; font-weight: 500;")
         self.lbl_txt_thang_diem.setObjectName("lbl_txt_thang_diem")
         self.stat_scale_layout.addWidget(self.lbl_txt_thang_diem)
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.stat_scale_layout.addItem(spacerItem4)
+        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.stat_scale_layout.addItem(spacerItem5)
         self.lbl_thang_diem = QtWidgets.QLabel(parent=self.card_summary)
         self.lbl_thang_diem.setStyleSheet("color: #111827; font-size: 15px; font-weight: 700;")
         self.lbl_thang_diem.setObjectName("lbl_thang_diem")
@@ -586,39 +630,45 @@ class Ui_MainScreen(object):
         self.lbl_header_icon.setText(_translate("MainScreen", "🧮"))
         self.lbl_header_title.setText(_translate("MainScreen", "GPA Calculator"))
         self.lbl_header_subtitle.setText(_translate("MainScreen", "Calculate your Grade Point Average easily."))
+        self.lbl_courses_title.setText(_translate("MainScreen", "Course List"))
+        self.lbl_chon_he.setText(_translate("MainScreen", "Thang điểm nhập:"))
+        self.btn_he_10.setText(_translate("MainScreen", "Hệ 10 (Thang 10)"))
+        self.btn_he_4.setText(_translate("MainScreen", "Hệ 4 (Thang 4)"))
         item = self.tbl_mon_hoc.horizontalHeaderItem(0)
         item.setText(_translate("MainScreen", "Course"))
         item = self.tbl_mon_hoc.horizontalHeaderItem(1)
         item.setText(_translate("MainScreen", "Credit Hours"))
         item = self.tbl_mon_hoc.horizontalHeaderItem(2)
-        item.setText(_translate("MainScreen", "Grade"))
+        item.setText(_translate("MainScreen", "Score (Điểm)"))
         item = self.tbl_mon_hoc.horizontalHeaderItem(3)
-        item.setText(_translate("MainScreen", "Grade Points"))
+        item.setText(_translate("MainScreen", "Grade"))
         item = self.tbl_mon_hoc.horizontalHeaderItem(4)
+        item.setText(_translate("MainScreen", "Grade Points"))
+        item = self.tbl_mon_hoc.horizontalHeaderItem(5)
         item.setText(_translate("MainScreen", "Action"))
         self.btn_them_mon.setText(_translate("MainScreen", "+ Add Course"))
         self.btn_xoa_mon.setText(_translate("MainScreen", "🗑 Delete Row"))
-        self.lbl_scale_title.setText(_translate("MainScreen", "Grading Scale"))
+        self.lbl_scale_title.setText(_translate("MainScreen", "Grading Scale (Thang quy đổi)"))
         self.lbl_g_1.setText(_translate("MainScreen", "A+"))
-        self.lbl_p_1.setText(_translate("MainScreen", "4.00"))
+        self.lbl_p_1.setText(_translate("MainScreen", "4.00 (≥9.0)"))
         self.lbl_g_2.setText(_translate("MainScreen", "A"))
-        self.lbl_p_2.setText(_translate("MainScreen", "4.00"))
+        self.lbl_p_2.setText(_translate("MainScreen", "4.00 (8.5)"))
         self.lbl_g_3.setText(_translate("MainScreen", "A-"))
-        self.lbl_p_3.setText(_translate("MainScreen", "3.67"))
+        self.lbl_p_3.setText(_translate("MainScreen", "3.67 (8.0)"))
         self.lbl_g_4.setText(_translate("MainScreen", "B+"))
-        self.lbl_p_4.setText(_translate("MainScreen", "3.33"))
+        self.lbl_p_4.setText(_translate("MainScreen", "3.33 (7.5)"))
         self.lbl_g_5.setText(_translate("MainScreen", "B"))
-        self.lbl_p_5.setText(_translate("MainScreen", "3.00"))
+        self.lbl_p_5.setText(_translate("MainScreen", "3.00 (7.0)"))
         self.lbl_g_6.setText(_translate("MainScreen", "B-"))
-        self.lbl_p_6.setText(_translate("MainScreen", "2.67"))
+        self.lbl_p_6.setText(_translate("MainScreen", "2.67 (6.5)"))
         self.lbl_g_7.setText(_translate("MainScreen", "C+"))
-        self.lbl_p_7.setText(_translate("MainScreen", "2.33"))
+        self.lbl_p_7.setText(_translate("MainScreen", "2.33 (6.0)"))
         self.lbl_g_8.setText(_translate("MainScreen", "C"))
-        self.lbl_p_8.setText(_translate("MainScreen", "2.00"))
+        self.lbl_p_8.setText(_translate("MainScreen", "2.00 (5.5)"))
         self.lbl_g_9.setText(_translate("MainScreen", "D"))
-        self.lbl_p_9.setText(_translate("MainScreen", "1.00"))
+        self.lbl_p_9.setText(_translate("MainScreen", "1.00 (4.0)"))
         self.lbl_g_10.setText(_translate("MainScreen", "F"))
-        self.lbl_p_10.setText(_translate("MainScreen", "0.00"))
+        self.lbl_p_10.setText(_translate("MainScreen", "0.00 (<4.0)"))
         self.lbl_tieu_de_gpa.setText(_translate("MainScreen", "Your GPA"))
         self.lbl_gpa_hien_tai.setText(_translate("MainScreen", "3.42"))
         self.lbl_trang_thai_gpa.setText(_translate("MainScreen", "Good Job!"))
@@ -633,7 +683,7 @@ class Ui_MainScreen(object):
         self.lbl_txt_thang_diem.setText(_translate("MainScreen", "GPA Scale"))
         self.lbl_thang_diem.setText(_translate("MainScreen", "4.00"))
         self.lbl_tieu_de_muc_tieu.setText(_translate("MainScreen", "🎯 Target GPA (GPA Mục tiêu):"))
-        self.txt_gpa_muc_tieu.setPlaceholderText(_translate("MainScreen", "Ví dụ: 3.50"))
+        self.txt_gpa_muc_tieu.setPlaceholderText(_translate("MainScreen", "Ví dụ: 3.50 (thang 4) hoặc 8.0"))
         self.lbl_diem_can_dat.setText(_translate("MainScreen", "Điểm cần đạt các môn còn lại: --"))
         self.btn_tinh_gpa.setText(_translate("MainScreen", "CALCULATE GPA"))
         self.icon_info.setText(_translate("MainScreen", "ⓘ"))

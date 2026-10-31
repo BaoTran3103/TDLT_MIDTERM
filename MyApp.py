@@ -21,7 +21,8 @@ MainScreen_Ext = ext_module.MainScreen_Ext
 class MyApp(QApplication):
     def __init__(self, sys_argv):
         super().__init__(sys_argv)
-        app_font = QFont("-apple-system", 10)
+        app_font = QFont("SF Pro Display", 10)
+        app_font.setStyleHint(QFont.StyleHint.SansSerif)
         self.setFont(app_font)
         
         self.main_window = MainScreen_Ext()
