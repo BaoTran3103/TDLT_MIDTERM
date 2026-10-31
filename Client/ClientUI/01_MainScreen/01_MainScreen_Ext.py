@@ -39,6 +39,7 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         self._cai_dat_nhom_nut_he()
         self._cai_dat_bang()
         self._ket_noi_su_kien()
+        self._cai_dat_man_hinh()
         self._khoi_tao_du_lieu_mau()
         self._cap_nhat_goi_y_theo_he()
         self.tinh_gpa_hien_tai()
@@ -64,7 +65,9 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         self.btn_xoa_mon.setToolTip(
             "Giữ Shift để chọn nhiều dòng liên tiếp, giữ Ctrl (⌘ trên Mac) để chọn từng dòng rời")
 
-    def _gan_noi_dung_nut(self, btn: QPushButton, ten_icon: str, noi_dung: str, mau_chu: str):
+    def _gan_noi_dung_nut(self, btn: QPushButton, ten_icon: str, noi_dung: str, mau_chu: str,
+                          co_chu: int = 13):
+        """Đặt icon và chữ vào nút bằng layout riêng để chỉnh được khoảng cách giữa icon và chữ"""
         KHOANG_CACH_ICON_CHU = 12
         btn.setText("")
 
@@ -76,17 +79,18 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         lbl_icon = QLabel()
         lbl_icon.setFixedSize(18, 18)
         path = os.path.join(ICON_DIR, ten_icon)
-        if os.path.exists(path):
+        co_icon = os.path.exists(path)
+        if co_icon:
             lbl_icon.setPixmap(QIcon(path).pixmap(QSize(18, 18)))
         lbl_icon.setStyleSheet("background: transparent; border: none; padding: 0;")
 
         lbl_chu = QLabel(noi_dung)
         lbl_chu.setStyleSheet(
             f"background: transparent; border: none; padding: 0; "
-            f"color: {mau_chu}; font-weight: 700; font-size: 13px;")
+            f"color: {mau_chu}; font-weight: 700; font-size: {co_chu}px;")
 
         # Để click xuyên qua label xuống nút
-        for w in (lbl_icon, lbl_chu):
+        for w in ((lbl_icon, lbl_chu) if co_icon else (lbl_chu,)):
             w.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents)
             lay.addWidget(w)
 
@@ -169,12 +173,32 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         self.tbl_mon_hoc.setColumnWidth(3, 130)  # Điểm chữ
         self.tbl_mon_hoc.setColumnWidth(4, 90)  # Thao tác
 
-        self.tbl_mon_hoc.verticalHeader().setVisible(False)
+        # Cột số thứ tự: dùng header dọc của bảng nên tự đánh lại số 1, 2, 3... khi thêm/xóa dòng
+        # và không làm lệch chỉ số các cột dữ liệu. Bấm vào số thứ tự để chọn cả dòng.
+        header_doc = self.tbl_mon_hoc.verticalHeader()
+        header_doc.setVisible(True)
+        header_doc.setFixedWidth(52)
+        header_doc.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        header_doc.setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+        header_doc.setStyleSheet("""
+            QHeaderView { background-color: #FFFFFF; border: none; }
+            QHeaderView::section {
+                background-color: #FFFFFF; color: #8A93A5; font-size: 13px; font-weight: 700;
+                border: none; border-bottom: 1px solid #EEF2F8; padding: 0px;
+            }
+            QHeaderView::section:checked { background-color: #EAF3FF; color: #2D7BF3; }
+        """)
+        header_doc.sectionPressed.connect(self._dat_dong_neo_tu_so_thu_tu)
         self.tbl_mon_hoc.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         # Cho phép chọn nhiều dòng (Shift: chọn một dãy, Ctrl/⌘: chọn từng dòng)
         self.tbl_mon_hoc.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.tbl_mon_hoc.setShowGrid(False)
         self.tbl_mon_hoc.selectionModel().selectionChanged.connect(self._cap_nhat_giao_dien_chon)
+
+    def _dat_dong_neo_tu_so_thu_tu(self, row: int):
+        """Bấm số thứ tự thì dòng đó thành dòng mốc (trừ khi đang giữ Shift để chọn dãy)"""
+        if not (QtWidgets.QApplication.keyboardModifiers() & QtCore.Qt.KeyboardModifier.ShiftModifier):
+            self.dong_neo = row
 
     def eventFilter(self, obj, event):
         """
@@ -248,6 +272,107 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         self.btn_them_mon.clicked.connect(lambda: self.them_mon())
         self.btn_xoa_mon.clicked.connect(self.xoa_dong_duoc_chon)
         self.txt_gpa_muc_tieu.textChanged.connect(self.tinh_diem_can_dat)
+
+    def _cai_dat_man_hinh(self):
+        """
+        Thêm nút Tính GPA (dưới khung danh sách môn học) và nút Quay lại (góc phải trên).
+        Lúc đầu chỉ hiện khung danh sách môn học; bấm Tính GPA mới hiện màn hình kết quả.
+        """
+        # Nút Tính GPA: nằm ngay dưới khung danh sách môn học
+        self.btn_tinh_gpa = QPushButton(self.centralwidget)
+        self.btn_tinh_gpa.setObjectName("btn_tinh_gpa")
+        self.btn_tinh_gpa.setMinimumHeight(54)
+        self.btn_tinh_gpa.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.btn_tinh_gpa.setStyleSheet("""
+            QPushButton#btn_tinh_gpa {
+                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #2D7BF3, stop:1 #5B9BF8);
+                border: none; border-radius: 27px;
+            }
+            QPushButton#btn_tinh_gpa:hover {
+                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #1F6BE0, stop:1 #4A8FF6);
+            }
+        """)
+        self._gan_noi_dung_nut(self.btn_tinh_gpa, "target_white.svg", "Tính GPA", "#FFFFFF", 15)
+        self.left_column_layout.insertWidget(1, self.btn_tinh_gpa)
+
+        # Nút Quay lại: góc phải trên cùng, cùng hàng với tiêu đề
+        self.btn_quay_lai = QPushButton(self.centralwidget)
+        self.btn_quay_lai.setObjectName("btn_quay_lai")
+        self.btn_quay_lai.setMinimumSize(150, 44)
+        self.btn_quay_lai.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.btn_quay_lai.setStyleSheet("""
+            QPushButton#btn_quay_lai {
+                background-color: #FFFFFF; border: 1.5px solid #E1E8F3; border-radius: 22px;
+            }
+            QPushButton#btn_quay_lai:hover { background-color: #EAF3FF; border-color: #2D7BF3; }
+        """)
+        self._gan_noi_dung_nut(self.btn_quay_lai, "arrow-left_dark.svg", "← Quay lại", "#16181E")
+        self.header_layout.addWidget(self.btn_quay_lai, 0, QtCore.Qt.AlignmentFlag.AlignVCenter)
+
+        self.btn_tinh_gpa.clicked.connect(self.xu_ly_tinh_gpa)
+        self.btn_quay_lai.clicked.connect(lambda: self._chuyen_man_hinh(False))
+        self._chuyen_man_hinh(False)
+
+    def _chuyen_man_hinh(self, hien_ket_qua: bool):
+        """Chuyển giữa màn hình nhập môn học (False) và màn hình kết quả đầy đủ (True)"""
+        self.card_summary.setVisible(hien_ket_qua)
+        self.card_scale.setVisible(hien_ket_qua)
+        self.btn_quay_lai.setVisible(hien_ket_qua)
+        self.btn_tinh_gpa.setVisible(not hien_ket_qua)
+
+    def kiem_tra_du_lieu(self):
+        """
+        Kiểm tra toàn bộ dữ liệu trước khi tính. Trả về (hop_le, thong_bao).
+        Thông báo nêu rõ từng dòng sai (đánh số từ 1).
+        """
+        so_dong = self.tbl_mon_hoc.rowCount()
+        if so_dong == 0:
+            return False, "Hãy thêm ít nhất một môn học trước khi tính GPA."
+
+        loi = []
+        for r in range(so_dong):
+            txt_ten = self.tbl_mon_hoc.cellWidget(r, 0)
+            txt_tc = self.tbl_mon_hoc.cellWidget(r, 1)
+            txt_sc = self.tbl_mon_hoc.cellWidget(r, 2)
+            if txt_ten and not txt_ten.text().strip():
+                loi.append(f"Dòng {r + 1}: Tên môn học không được để trống.")
+            if txt_tc:
+                hop_le, tb = self.kiem_tra_tin_chi(txt_tc.text())
+                if not hop_le:
+                    loi.append(f"Dòng {r + 1}: {tb}")
+            if txt_sc:
+                hop_le, tb = self.kiem_tra_diem(txt_sc.text())
+                if not hop_le:
+                    loi.append(f"Dòng {r + 1}: {tb}")
+
+        text_mt = self.txt_gpa_muc_tieu.text().strip()
+        if text_mt:
+            mt = self._doc_so(text_mt)
+            toi_da = self.DIEM_TOI_DA[self.che_do_diem]
+            ten_he = "10" if self.che_do_diem == "HE_10" else "4"
+            if mt is None or mt < 0 or mt > toi_da:
+                loi.append(f"GPA mục tiêu phải là một số trong khoảng từ 0 đến {toi_da:g} "
+                           f"theo thang điểm hệ {ten_he}.")
+
+        if loi:
+            TOI_DA_HIEN = 6
+            thong_bao = "\n".join(loi[:TOI_DA_HIEN])
+            if len(loi) > TOI_DA_HIEN:
+                thong_bao += f"\n... và {len(loi) - TOI_DA_HIEN} lỗi khác."
+            return False, thong_bao
+        return True, ""
+
+    def xu_ly_tinh_gpa(self):
+        """Bấm nút Tính GPA: kiểm tra dữ liệu, tính toán rồi chuyển sang màn hình kết quả"""
+        hop_le, thong_bao = self.kiem_tra_du_lieu()
+        if not hop_le:
+            self._thong_bao(
+                "Dữ liệu chưa hợp lệ",
+                "Dữ liệu nhập vào chưa hợp lệ.",
+                "Vui lòng kiểm tra và chỉnh sửa các nội dung sau:\n\n" + thong_bao)
+            return
+        self.tinh_gpa_hien_tai()
+        self._chuyen_man_hinh(True)
 
     def _khoi_tao_du_lieu_mau(self):
         """Nạp danh sách môn học mẫu ban đầu"""
@@ -477,10 +602,11 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         ten_he = "10" if che_do == "HE_10" else "4"
         toi_da = self.DIEM_TOI_DA[che_do]
         if val is None:
-            return False, f"Điểm phải là một số, ví dụ {'8.5' if che_do == 'HE_10' else '3.5'}."
+            return False, (f"Điểm số phải là một số hợp lệ "
+                           f"(ví dụ: {'8.5' if che_do == 'HE_10' else '3.5'}).")
         if val < 0 or val > toi_da:
-            return False, (f"Điểm thang {ten_he} chỉ được từ 0 đến {toi_da:g}, "
-                           f"nhưng bạn đã nhập {val:g}.")
+            return False, (f"Điểm số phải nằm trong khoảng từ 0 đến {toi_da:g} "
+                           f"theo thang điểm hệ {ten_he} (giá trị đã nhập: {val:g}).")
         return True, ""
 
     def kiem_tra_tin_chi(self, text: str):
@@ -489,10 +615,10 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
             return False, "Số tín chỉ không được để trống."
         val = self._doc_so(text)
         if val is None:
-            return False, "Số tín chỉ phải là một số, ví dụ 3."
+            return False, "Số tín chỉ phải là một số hợp lệ (ví dụ: 3)."
         if val <= 0 or val > self.TIN_CHI_TOI_DA:
-            return False, (f"Số tín chỉ phải lớn hơn 0 và tối đa {self.TIN_CHI_TOI_DA}, "
-                           f"nhưng bạn đã nhập {val:g}.")
+            return False, (f"Số tín chỉ phải lớn hơn 0 và không vượt quá {self.TIN_CHI_TOI_DA} "
+                           f"(giá trị đã nhập: {val:g}).")
         return True, ""
 
     def _goi_y_diem(self) -> str:
@@ -539,9 +665,12 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         thong_bao = o.property("thong_bao_loi")
         if not thong_bao or self._dang_bao_loi:
             return
+        row = self.tbl_mon_hoc.indexAt(o.pos()).row()
+        if row >= 0:
+            thong_bao = f"Dòng {row + 1}: {thong_bao}"
         self._dang_bao_loi = True
         try:
-            self._thong_bao("Dữ liệu chưa hợp lệ", thong_bao)
+            self._thong_bao("Dữ liệu chưa hợp lệ", "Dữ liệu nhập vào chưa hợp lệ.", thong_bao)
         finally:
             self._dang_bao_loi = False
 
@@ -656,8 +785,8 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         hop.setStyleSheet("""
             QMessageBox { background-color: #FFFFFF; }
             QMessageBox QLabel { color: #16181E; font-size: 13px; background: transparent; }
-            QMessageBox QLabel#qt_msgbox_label { font-size: 15px; font-weight: 700; }
-            QMessageBox QLabel#qt_msgbox_informativelabel { color: #4B5565; font-weight: 500; }
+            QMessageBox QLabel#qt_msgbox_label { font-size: 15px; font-weight: 700; min-width: 400px; }
+            QMessageBox QLabel#qt_msgbox_informativelabel { color: #4B5565; font-weight: 500; min-width: 400px; }
             QMessageBox QPushButton {
                 background-color: #FFFFFF; border: 1.5px solid #E1E8F3; border-radius: 20px;
                 color: #16181E; font-size: 13px; font-weight: 700;
@@ -674,14 +803,21 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         """)
         return hop
 
+    @staticmethod
+    def _ap_style_nut_chinh(btn: QPushButton):
+        """Đặt tên nút chính rồi làm mới style (đặt objectName sau khi tạo thì QSS không tự áp dụng)"""
+        btn.setObjectName("btn_dong_y")
+        btn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        btn.style().unpolish(btn)
+        btn.style().polish(btn)
+
     def _hoi_xac_nhan(self, tieu_de: str, noi_dung: str, chi_tiet: str,
                       ten_nut_dong_y: str, ten_icon: str = "") -> bool:
         """Hộp thoại hỏi xác nhận 2 nút tiếng Việt. Trả về True nếu người dùng đồng ý"""
         hop = self._tao_hop_thoai(tieu_de, noi_dung, chi_tiet, ten_icon)
         btn_huy = hop.addButton("Hủy", QMessageBox.ButtonRole.RejectRole)
         btn_dong_y = hop.addButton(ten_nut_dong_y, QMessageBox.ButtonRole.AcceptRole)
-        btn_dong_y.setObjectName("btn_dong_y")
-        btn_dong_y.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self._ap_style_nut_chinh(btn_dong_y)
         btn_huy.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         hop.setDefaultButton(btn_huy)  # Enter mặc định là Hủy cho an toàn
         hop.setEscapeButton(btn_huy)
@@ -691,9 +827,8 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
     def _thong_bao(self, tieu_de: str, noi_dung: str, chi_tiet: str = ""):
         """Hộp thoại thông báo một nút OK"""
         hop = self._tao_hop_thoai(tieu_de, noi_dung, chi_tiet)
-        btn_ok = hop.addButton("Đã hiểu", QMessageBox.ButtonRole.AcceptRole)
-        btn_ok.setObjectName("btn_dong_y")
-        btn_ok.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        btn_ok = hop.addButton("Đóng", QMessageBox.ButtonRole.AcceptRole)
+        self._ap_style_nut_chinh(btn_ok)
         hop.exec()
 
     def xoa_dong_duoc_chon(self):
@@ -912,7 +1047,23 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         self.tinh_diem_can_dat()
         return gpa
 
+    def _liet_ke_mon_con_lai(self, ds_mon, can_dat: float, don_vi: str) -> str:
+        """
+        Liệt kê từng môn chưa có điểm kèm điểm tối thiểu cần đạt (khi chia đều điểm giữa các môn).
+        Mỗi môn một dòng, hiện tối đa TOI_DA_HIEN môn, phần còn lại gộp thành một dòng.
+        """
+        TOI_DA_HIEN = 6
+        dong = []
+        con_lai = [(i, m) for i, m in enumerate(ds_mon) if m["diem"] is None and m["tin_chi"] > 0]
+        for i, m in con_lai[:TOI_DA_HIEN]:
+            ten = m["ten"] or f"Môn ở dòng {i + 1}"
+            dong.append(f"• {ten} ({m['tin_chi']:g} tín chỉ): ít nhất {can_dat:.2f}{don_vi}")
+        if len(con_lai) > TOI_DA_HIEN:
+            dong.append(f"• ... và {len(con_lai) - TOI_DA_HIEN} môn khác")
+        return "\n".join(dong)
+
     def _hien_thi_muc_tieu(self, text: str, mau: str = "#16181E"):
+        self.lbl_diem_can_dat.setWordWrap(True)
         self.lbl_diem_can_dat.setText(text)
         self.lbl_diem_can_dat.setStyleSheet(f"color: {mau}; font-size: 12px; font-weight: 700;")
 
@@ -986,7 +1137,8 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
                     break
             self._hien_thi_muc_tieu(
                 f"Cần TB tối thiểu {can_dat:.2f}/10.00 (≈ hạng {hang}) "
-                f"cho {tc_chua_txt} tín chỉ còn lại", "#16181E")
+                f"cho {tc_chua_txt} tín chỉ còn lại:\n"
+                + self._liet_ke_mon_con_lai(ds_mon, can_dat, "/10.00"), "#16181E")
         else:
             hang, can_duoi = "A+", 9.0
             for diem4, chu, lo in reversed(self.BANG_QUY_DOI):
@@ -995,7 +1147,8 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
                     break
             self._hien_thi_muc_tieu(
                 f"Cần TB tối thiểu {can_dat:.2f}/4.00 (≈ hạng {hang}, từ {can_duoi:.1f}/10) "
-                f"cho {tc_chua_txt} tín chỉ còn lại", "#16181E")
+                f"cho {tc_chua_txt} tín chỉ còn lại:\n"
+                + self._liet_ke_mon_con_lai(ds_mon, can_dat, "/4.00"), "#16181E")
 
     def _cap_nhat_card_scale_he_10(self):
         """Cập nhật ghi chú thang điểm quy đổi theo thang 10 chuẩn trường"""
