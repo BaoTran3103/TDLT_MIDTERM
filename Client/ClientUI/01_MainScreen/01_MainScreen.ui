@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainScreen</class>
+ <widget class="QMainWindow" name="MainScreen">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1440</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>GPA Calculator - TDLT Midterm</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* Main Application Styling */
+QMainWindow {
+    background-color: #F8F8EB;
+}
+QWidget#centralwidget {
+    background-color: #F8F8EB;
+}
+
+/* Card Containers */
+QFrame#card_courses, QFrame#card_scale, QFrame#card_summary {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7D8;
+    border-radius: 20px;
+}
+
+/* Header Text */
+QLabel#lbl_header_title {
+    color: #000000;
+    font-size: 28px;
+    font-weight: 800;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+}
+QLabel#lbl_header_subtitle {
+    color: #6B7280;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Table Widget Styling */
+QTableWidget#tbl_mon_hoc {
+    background-color: #FFFFFF;
+    border: none;
+    gridline-color: transparent;
+    selection-background-color: #F8F8EB;
+    selection-color: #000000;
+    font-size: 13px;
+}
+QTableWidget#tbl_mon_hoc QHeaderView::section {
+    background-color: #FFFFFF;
+    color: #4B5563;
+    font-weight: 700;
+    font-size: 13px;
+    border: none;
+    border-bottom: 2px solid #F3F4F6;
+    padding: 8px 4px;
+}
+QTableWidget#tbl_mon_hoc::item {
+    border-bottom: 1px solid #F3F4F6;
+    padding: 6px;
+}
+
+/* Inputs and Buttons */
+QLineEdit {
+    background-color: #FFFFFF;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #111827;
+}
+QLineEdit:focus {
+    border: 1.5px solid #ADBF15;
+}
+
+/* Add Course Button */
+QPushButton#btn_them_mon {
+    background-color: #FFFFFF;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 10px;
+    color: #1F2937;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 18px;
+}
+QPushButton#btn_them_mon:hover {
+    border: 1.5px solid #ADBF15;
+    color: #727F09;
+    background-color: #F8F8EB;
+}
+QPushButton#btn_xoa_mon {
+    background-color: #FFFFFF;
+    border: 1.5px solid #FEE2E2;
+    border-radius: 10px;
+    color: #DC2626;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 8px 18px;
+}
+QPushButton#btn_xoa_mon:hover {
+    background-color: #FEF2F2;
+    border-color: #DC2626;
+}
+
+/* Calculate Button */
+QPushButton#btn_tinh_gpa {
+    background-color: #ADBF15;
+    color: #000000;
+    font-size: 15px;
+    font-weight: 800;
+    border: none;
+    border-radius: 22px;
+    padding: 12px 24px;
+}
+QPushButton#btn_tinh_gpa:hover {
+    background-color: #9BAE12;
+}
+QPushButton#btn_tinh_gpa:pressed {
+    background-color: #8A9C10;
+}
+
+/* Right Card Elements */
+QLabel#lbl_tieu_de_gpa {
+    color: #111827;
+    font-size: 16px;
+    font-weight: 700;
+}
+QLabel#lbl_gpa_hien_tai {
+    color: #ADBF15;
+    font-size: 64px;
+    font-weight: 800;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+}
+QLabel#lbl_trang_thai_gpa {
+    color: #111827;
+    font-size: 16px;
+    font-weight: 700;
+}
+QLabel#lbl_dong_vien {
+    color: #6B7280;
+    font-size: 12px;
+}
+
+/* Grading Scale Boxes */
+QFrame.scale_box {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+}
+
+/* Tip Frame */
+QFrame#frame_tip {
+    background-color: #F0FDF4;
+    border: 1px solid #DCFCE7;
+    border-radius: 12px;
+}
+QLabel#lbl_cong_thuc {
+    color: #166534;
+    font-size: 12px;
+    font-weight: 600;
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="main_vertical_layout">
+    <property name="spacing">
+     <number>20</number>
+    </property>
+    <property name="leftMargin">
+     <number>32</number>
+    </property>
+    <property name="topMargin">
+     <number>24</number>
+    </property>
+    <property name="rightMargin">
+     <number>32</number>
+    </property>
+    <property name="bottomMargin">
+     <number>24</number>
+    </property>
+    <item>
+     <!-- Header Row -->
+     <layout class="QHBoxLayout" name="header_layout">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lbl_header_icon">
+        <property name="minimumSize">
+         <size>
+          <width>52</width>
+          <height>52</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>52</width>
+          <height>52</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #0E1E2F; border-radius: 14px; color: #FFFFFF; font-size: 26px; qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>🧮</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="header_text_layout">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lbl_header_title">
+          <property name="text">
+           <string>GPA Calculator</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_header_subtitle">
+          <property name="text">
+           <string>Calculate your Grade Point Average easily.</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="header_spacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <!-- Body Row (Left Column + Right Column) -->
+     <layout class="QHBoxLayout" name="body_layout">
+      <property name="spacing">
+       <number>24</number>
+      </property>
+      <!-- LEFT COLUMN (Courses + Grading Scale) -->
+      <item>
+       <layout class="QVBoxLayout" name="left_column_layout">
+        <property name="spacing">
+         <number>16</number>
+        </property>
+        <!-- CARD 1: COURSES TABLE -->
+        <item>
+         <widget class="QFrame" name="card_courses">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="card_courses_layout">
+           <property name="spacing">
+            <number>14</number>
+           </property>
+           <property name="leftMargin">
+            <number>24</number>
+           </property>
+           <property name="topMargin">
+            <number>20</number>
+           </property>
+           <property name="rightMargin">
+            <number>24</number>
+           </property>
+           <property name="bottomMargin">
+            <number>20</number>
+           </property>
+           <item>
+            <widget class="QTableWidget" name="tbl_mon_hoc">
+             <property name="columnCount">
+              <number>5</number>
+             </property>
+             <column>
+              <property name="text">
+               <string>Course</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Credit Hours</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Grade</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Grade Points</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Action</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <!-- Button Row for Table -->
+            <layout class="QHBoxLayout" name="table_btn_layout">
+             <property name="spacing">
+              <number>12</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="btn_them_mon">
+               <property name="minimumSize">
+                <size>
+                 <width>130</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>+ Add Course</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_xoa_mon">
+               <property name="minimumSize">
+                <size>
+                 <width>130</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>🗑 Delete Row</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="table_btn_spacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <!-- CARD 2: GRADING SCALE -->
+        <item>
+         <widget class="QFrame" name="card_scale">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>110</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>125</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="card_scale_layout">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <property name="leftMargin">
+            <number>20</number>
+           </property>
+           <property name="topMargin">
+            <number>14</number>
+           </property>
+           <property name="rightMargin">
+            <number>20</number>
+           </property>
+           <property name="bottomMargin">
+            <number>14</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbl_scale_title">
+             <property name="styleSheet">
+              <string notr="true">font-size: 13px; font-weight: 700; color: #374151;</string>
+             </property>
+             <property name="text">
+              <string>Grading Scale</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="scale_badges_layout">
+             <property name="spacing">
+              <number>8</number>
+             </property>
+             <!-- Scale item A+ -->
+             <item>
+              <widget class="QFrame" name="scale_box_1">
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;</string>
+               </property>
+               <layout class="QVBoxLayout" name="scale_layout_1">
+                <property name="spacing"><number>2</number></property>
+                <property name="leftMargin"><number>4</number></property>
+                <property name="topMargin"><number>6</number></property>
+                <property name="rightMargin"><number>4</number></property>
+                <property name="bottomMargin"><number>6</number></property>
+                <item>
+                 <widget class="QLabel" name="lbl_g_1"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-weight: 700; font-size: 12px; color: #111827;</string></property><property name="text"><string>A+</string></property></widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_p_1"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-size: 11px; color: #6B7280;</string></property><property name="text"><string>4.00</string></property></widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <!-- Scale item A -->
+             <item>
+              <widget class="QFrame" name="scale_box_2">
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;</string>
+               </property>
+               <layout class="QVBoxLayout" name="scale_layout_2">
+                <property name="spacing"><number>2</number></property>
+                <property name="leftMargin"><number>4</number></property>
+                <property name="topMargin"><number>6</number></property>
+                <property name="rightMargin"><number>4</number></property>
+                <property name="bottomMargin"><number>6</number></property>
+                <item>
+                 <widget class="QLabel" name="lbl_g_2"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-weight: 700; font-size: 12px; color: #111827;</string></property><property name="text"><string>A</string></property></widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_p_2"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-size: 11px; color: #6B7280;</string></property><property name="text"><string>4.00</string></property></widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <!-- Scale item A- -->
+             <item>
+              <widget class="QFrame" name="scale_box_3">
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;</string>
+               </property>
+               <layout class="QVBoxLayout" name="scale_layout_3">
+                <property name="spacing"><number>2</number></property>
+                <property name="leftMargin"><number>4</number></property>
+                <property name="topMargin"><number>6</number></property>
+                <property name="rightMargin"><number>4</number></property>
+                <property name="bottomMargin"><number>6</number></property>
+                <item>
+                 <widget class="QLabel" name="lbl_g_3"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-weight: 700; font-size: 12px; color: #111827;</string></property><property name="text"><string>A-</string></property></widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_p_3"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-size: 11px; color: #6B7280;</string></property><property name="text"><string>3.67</string></property></widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <!-- Scale item B+ -->
+             <item>
+              <widget class="QFrame" name="scale_box_4">
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;</string>
+               </property>
+               <layout class="QVBoxLayout" name="scale_layout_4">
+                <property name="spacing"><number>2</number></property>
+                <property name="leftMargin"><number>4</number></property>
+                <property name="topMargin"><number>6</number></property>
+                <property name="rightMargin"><number>4</number></property>
+                <property name="bottomMargin"><number>6</number></property>
+                <item>
+                 <widget class="QLabel" name="lbl_g_4"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-weight: 700; font-size: 12px; color: #111827;</string></property><property name="text"><string>B+</string></property></widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_p_4"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-size: 11px; color: #6B7280;</string></property><property name="text"><string>3.33</string></property></widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <!-- Scale item B -->
+             <item>
+              <widget class="QFrame" name="scale_box_5">
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;</string>
+               </property>
+               <layout class="QVBoxLayout" name="scale_layout_5">
+                <property name="spacing"><number>2</number></property>
+                <property name="leftMargin"><number>4</number></property>
+                <property name="topMargin"><number>6</number></property>
+                <property name="rightMargin"><number>4</number></property>
+                <property name="bottomMargin"><number>6</number></property>
+                <item>
+                 <widget class="QLabel" name="lbl_g_5"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-weight: 700; font-size: 12px; color: #111827;</string></property><property name="text"><string>B</string></property></widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_p_5"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-size: 11px; color: #6B7280;</string></property><property name="text"><string>3.00</string></property></widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <!-- Scale item B- -->
+             <item>
+              <widget class="QFrame" name="scale_box_6">
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;</string>
+               </property>
+               <layout class="QVBoxLayout" name="scale_layout_6">
+                <property name="spacing"><number>2</number></property>
+                <property name="leftMargin"><number>4</number></property>
+                <property name="topMargin"><number>6</number></property>
+                <property name="rightMargin"><number>4</number></property>
+                <property name="bottomMargin"><number>6</number></property>
+                <item>
+                 <widget class="QLabel" name="lbl_g_6"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-weight: 700; font-size: 12px; color: #111827;</string></property><property name="text"><string>B-</string></property></widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_p_6"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-size: 11px; color: #6B7280;</string></property><property name="text"><string>2.67</string></property></widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <!-- Scale item C+ -->
+             <item>
+              <widget class="QFrame" name="scale_box_7">
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;</string>
+               </property>
+               <layout class="QVBoxLayout" name="scale_layout_7">
+                <property name="spacing"><number>2</number></property>
+                <property name="leftMargin"><number>4</number></property>
+                <property name="topMargin"><number>6</number></property>
+                <property name="rightMargin"><number>4</number></property>
+                <property name="bottomMargin"><number>6</number></property>
+                <item>
+                 <widget class="QLabel" name="lbl_g_7"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-weight: 700; font-size: 12px; color: #111827;</string></property><property name="text"><string>C+</string></property></widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_p_7"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-size: 11px; color: #6B7280;</string></property><property name="text"><string>2.33</string></property></widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <!-- Scale item C -->
+             <item>
+              <widget class="QFrame" name="scale_box_8">
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;</string>
+               </property>
+               <layout class="QVBoxLayout" name="scale_layout_8">
+                <property name="spacing"><number>2</number></property>
+                <property name="leftMargin"><number>4</number></property>
+                <property name="topMargin"><number>6</number></property>
+                <property name="rightMargin"><number>4</number></property>
+                <property name="bottomMargin"><number>6</number></property>
+                <item>
+                 <widget class="QLabel" name="lbl_g_8"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-weight: 700; font-size: 12px; color: #111827;</string></property><property name="text"><string>C</string></property></widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_p_8"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-size: 11px; color: #6B7280;</string></property><property name="text"><string>2.00</string></property></widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <!-- Scale item D -->
+             <item>
+              <widget class="QFrame" name="scale_box_9">
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;</string>
+               </property>
+               <layout class="QVBoxLayout" name="scale_layout_9">
+                <property name="spacing"><number>2</number></property>
+                <property name="leftMargin"><number>4</number></property>
+                <property name="topMargin"><number>6</number></property>
+                <property name="rightMargin"><number>4</number></property>
+                <property name="bottomMargin"><number>6</number></property>
+                <item>
+                 <widget class="QLabel" name="lbl_g_9"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-weight: 700; font-size: 12px; color: #111827;</string></property><property name="text"><string>D</string></property></widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_p_9"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-size: 11px; color: #6B7280;</string></property><property name="text"><string>1.00</string></property></widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <!-- Scale item F -->
+             <item>
+              <widget class="QFrame" name="scale_box_10">
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;</string>
+               </property>
+               <layout class="QVBoxLayout" name="scale_layout_10">
+                <property name="spacing"><number>2</number></property>
+                <property name="leftMargin"><number>4</number></property>
+                <property name="topMargin"><number>6</number></property>
+                <property name="rightMargin"><number>4</number></property>
+                <property name="bottomMargin"><number>6</number></property>
+                <item>
+                 <widget class="QLabel" name="lbl_g_10"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-weight: 700; font-size: 12px; color: #111827;</string></property><property name="text"><string>F</string></property></widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_p_10"><property name="alignment"><set>Qt::AlignCenter</set></property><property name="styleSheet"><string notr="true">font-size: 11px; color: #6B7280;</string></property><property name="text"><string>0.00</string></property></widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <!-- RIGHT COLUMN (Summary & Target GPA) -->
+      <item>
+       <widget class="QFrame" name="card_summary">
+        <property name="minimumSize">
+         <size>
+          <width>380</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>440</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="card_summary_layout">
+         <property name="spacing">
+          <number>16</number>
+         </property>
+         <property name="leftMargin">
+          <number>28</number>
+         </property>
+         <property name="topMargin">
+          <number>28</number>
+         </property>
+         <property name="rightMargin">
+          <number>28</number>
+         </property>
+         <property name="bottomMargin">
+          <number>28</number>
+         </property>
+         <!-- Your GPA Header -->
+         <item>
+          <widget class="QLabel" name="lbl_tieu_de_gpa">
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="text">
+            <string>Your GPA</string>
+           </property>
+          </widget>
+         </item>
+         <!-- Big GPA Number -->
+         <item>
+          <widget class="QLabel" name="lbl_gpa_hien_tai">
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="text">
+            <string>3.42</string>
+           </property>
+          </widget>
+         </item>
+         <!-- Status message -->
+         <item>
+          <widget class="QLabel" name="lbl_trang_thai_gpa">
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="text">
+            <string>Good Job!</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lbl_dong_vien">
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="text">
+            <string>Keep up the great work.</string>
+           </property>
+          </widget>
+         </item>
+         <!-- Divider -->
+         <item>
+          <widget class="Line" name="line_divider_1">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: #F3F4F6;</string>
+           </property>
+          </widget>
+         </item>
+         <!-- Stats: Total Credit Hours -->
+         <item>
+          <layout class="QHBoxLayout" name="stat_credits_layout">
+           <item>
+            <widget class="QLabel" name="icon_credits">
+             <property name="minimumSize"><size><width>32</width><height>32</height></size></property>
+             <property name="maximumSize"><size><width>32</width><height>32</height></size></property>
+             <property name="styleSheet"><string notr="true">background-color: #E0F2FE; border-radius: 16px; font-size: 15px;</string></property>
+             <property name="alignment"><set>Qt::AlignCenter</set></property>
+             <property name="text"><string>🎓</string></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbl_txt_tong_tin_chi">
+             <property name="styleSheet"><string notr="true">color: #4B5563; font-size: 13px; font-weight: 500;</string></property>
+             <property name="text"><string>Total Credit Hours</string></property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="sp_credits">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbl_tong_tin_chi">
+             <property name="styleSheet"><string notr="true">color: #111827; font-size: 15px; font-weight: 700;</string></property>
+             <property name="text"><string>17</string></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <!-- Stats: Total Grade Points -->
+         <item>
+          <layout class="QHBoxLayout" name="stat_points_layout">
+           <item>
+            <widget class="QLabel" name="icon_points">
+             <property name="minimumSize"><size><width>32</width><height>32</height></size></property>
+             <property name="maximumSize"><size><width>32</width><height>32</height></size></property>
+             <property name="styleSheet"><string notr="true">background-color: #F3E8FF; border-radius: 16px; font-size: 15px;</string></property>
+             <property name="alignment"><set>Qt::AlignCenter</set></property>
+             <property name="text"><string>🅰️</string></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbl_txt_tong_diem">
+             <property name="styleSheet"><string notr="true">color: #4B5563; font-size: 13px; font-weight: 500;</string></property>
+             <property name="text"><string>Total Grade Points</string></property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="sp_points">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbl_tong_diem">
+             <property name="styleSheet"><string notr="true">color: #111827; font-size: 15px; font-weight: 700;</string></property>
+             <property name="text"><string>58.00</string></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <!-- Stats: GPA Scale -->
+         <item>
+          <layout class="QHBoxLayout" name="stat_scale_layout">
+           <item>
+            <widget class="QLabel" name="icon_scale">
+             <property name="minimumSize"><size><width>32</width><height>32</height></size></property>
+             <property name="maximumSize"><size><width>32</width><height>32</height></size></property>
+             <property name="styleSheet"><string notr="true">background-color: #FEF3C7; border-radius: 16px; font-size: 15px;</string></property>
+             <property name="alignment"><set>Qt::AlignCenter</set></property>
+             <property name="text"><string>📊</string></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbl_txt_thang_diem">
+             <property name="styleSheet"><string notr="true">color: #4B5563; font-size: 13px; font-weight: 500;</string></property>
+             <property name="text"><string>GPA Scale</string></property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="sp_scale">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbl_thang_diem">
+             <property name="styleSheet"><string notr="true">color: #111827; font-size: 15px; font-weight: 700;</string></property>
+             <property name="text"><string>4.00</string></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <!-- Divider -->
+         <item>
+          <widget class="Line" name="line_divider_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: #F3F4F6;</string>
+           </property>
+          </widget>
+         </item>
+         <!-- Target GPA Input (Task 2 in README) -->
+         <item>
+          <layout class="QVBoxLayout" name="target_gpa_layout">
+           <property name="spacing"><number>6</number></property>
+           <item>
+            <widget class="QLabel" name="lbl_tieu_de_muc_tieu">
+             <property name="styleSheet">
+              <string notr="true">color: #1F2937; font-size: 13px; font-weight: 700;</string>
+             </property>
+             <property name="text">
+              <string>🎯 Target GPA (GPA Mục tiêu):</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="txt_gpa_muc_tieu">
+             <property name="minimumSize">
+              <size><width>0</width><height>38</height></size>
+             </property>
+             <property name="placeholderText">
+              <string>Ví dụ: 3.50</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbl_diem_can_dat">
+             <property name="styleSheet">
+              <string notr="true">color: #F4A46D; font-size: 12px; font-weight: 700;</string>
+             </property>
+             <property name="text">
+              <string>Điểm cần đạt các môn còn lại: --</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <!-- Calculate Button (Primary CTA) -->
+         <item>
+          <widget class="QPushButton" name="btn_tinh_gpa">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>CALCULATE GPA</string>
+           </property>
+          </widget>
+         </item>
+         <!-- Bottom Tip Frame -->
+         <item>
+          <widget class="QFrame" name="frame_tip">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>46</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="frame_tip_layout">
+            <property name="spacing"><number>8</number></property>
+            <property name="leftMargin"><number>14</number></property>
+            <property name="topMargin"><number>8</number></property>
+            <property name="rightMargin"><number>14</number></property>
+            <property name="bottomMargin"><number>8</number></property>
+            <item>
+             <widget class="QLabel" name="icon_info">
+              <property name="styleSheet"><string notr="true">font-size: 14px; color: #166534;</string></property>
+              <property name="text"><string>ⓘ</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lbl_cong_thuc">
+              <property name="text">
+               <string>GPA = Total Grade Points / Total Credit Hours</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
