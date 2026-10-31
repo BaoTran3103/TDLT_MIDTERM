@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1151</width>
+    <height>708</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* 1. TIÊU ĐỀ CHÍNH: Nâng cấp sang màu vàng nắng (Sun-gold) cực sang, không còn trắng nhách */
+QLabel#label {
+    color: #FFDC73; 
+    font-family: &quot;Impact&quot;;
+    font-size: 38pt;
+}
+
+/* 2. Thanh chữ chạy Marquee phía trên */
+#runningLabel {
+    background-color: rgba(20, 20, 20, 0.65);
+    color: #F39C12;
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 4px 10px;
+}
+
+/* 3. TẤT CẢ các ô nhập liệu bên trái (Có border rõ nét, chữ sắc không mờ) */
+QLineEdit {
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 2px solid #2C3E50;
+    border-radius: 8px;
+    padding: 5px 8px;
+    font-size: 12pt;
+    color: #1E272E;
+}
+
+QLineEdit:focus {
+    background-color: #FFFFFF;
+    border: 2.5px solid #E67E22;
+}
+
+/* Ô GOAL riêng biệt bên dưới */
+QLineEdit#goalInput {
+    background-color: rgba(230, 126, 34, 0.95);
+    color: #FFFFFF;
+    font-weight: bold;
+    border: 2px solid #D35400;
+}
+
+/* Nhãn chữ GOAL */
+QLabel {
+    color: #FFF8E7;
+    font-family: &quot;Impact&quot;;
+    font-size: 18pt;
+}
+
+/* 4. KHUNG KẾT QUẢ DỰ BÁO BÊN PHẢI (Smart Result Box) */
+QGroupBox {
+    color: #FFF8E7;
+    font-family: &quot;Impact&quot;;
+    font-size: 16pt;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    margin-top: 15px;
+    background-color: rgba(0, 0, 0, 0.45);
+    padding-top: 15px;
+}
+
+/* ĐÃ FIX: Chỉnh tiêu đề &quot;KẾT QUẢ DỰ BÁO&quot; cho khớp font Impact và màu vàng đồng bộ */
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+    color: #FFDC73;
+    font-family: &quot;Impact&quot;;
+    font-size: 15pt;
+}
+
+/* Các nhãn chữ bên trong khung kết quả */
+QGroupBox QLabel {
+    color: #FFF8E7;
+    font-family: &quot;Impact&quot;;
+    font-size: 14pt;
+    letter-spacing: 1px;
+}
+
+/* 5. NÚT CALCULATE: Giữ nguyên bản tuyệt đẹp không đụng chạm */
+QPushButton {
+    background-color: #E67E22;
+    color: #FFFFFF;
+    font-family: &quot;Impact&quot;;
+    font-size: 16pt;
+    border-radius: 12px;
+    border: 2px solid #D35400;
+}
+
+QPushButton:hover {
+    background-color: #D35400;
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="background">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>-30</y>
+      <width>1151</width>
+      <height>701</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">/* 1. Các ô nhập liệu (Tên môn, Tín chỉ, GPA): Viền đậm rõ nét, bo góc mượt */
+QLineEdit {
+    background-color: rgba(255, 255, 255, 0.95); /* Nền trắng đục chắc chắn */
+    border: 2px solid #2f3640; /* Viền xám đen đậm bản to, chống mờ hoàn toàn */
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 13pt;
+    color: #1e272e; /* Chữ gõ vào màu đen đậm sắc nét */
+}
+
+/* Hiệu ứng khi click vào ô nào, ô đó viền sáng cam lên cực đẹp */
+QLineEdit:focus {
+    background-color: #ffffff;
+    border: 2.5px solid #E67E22;
+}
+
+/* 2. Ô Goal (Mục tiêu) riêng biệt cho nổi bật */
+#goalInput {
+    background-color: rgba(230, 126, 34, 0.95);
+    color: #ffffff;
+    font-weight: bold;
+    border: 2px solid #D35400;
+    border-radius: 8px;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../../../Images/img_2.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="programname">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>20</y>
+      <width>511</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    color: white;
+    font-family: &quot;Impact&quot;;
+    font-size: 52pt;
+}</string>
+    </property>
+    <property name="text">
+     <string>GPA TARGET SIMULATOR</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tinchi1">
+    <property name="geometry">
+     <rect>
+      <x>261</x>
+      <y>141</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="gpa1">
+    <property name="geometry">
+     <rect>
+      <x>471</x>
+      <y>141</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tinchi2">
+    <property name="geometry">
+     <rect>
+      <x>261</x>
+      <y>192</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="gpa2">
+    <property name="geometry">
+     <rect>
+      <x>471</x>
+      <y>192</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tinchi3">
+    <property name="geometry">
+     <rect>
+      <x>261</x>
+      <y>243</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="gpa3">
+    <property name="geometry">
+     <rect>
+      <x>471</x>
+      <y>243</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tinchi4">
+    <property name="geometry">
+     <rect>
+      <x>261</x>
+      <y>294</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="gpa4">
+    <property name="geometry">
+     <rect>
+      <x>471</x>
+      <y>294</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tinchi5">
+    <property name="geometry">
+     <rect>
+      <x>261</x>
+      <y>345</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="gpa5">
+    <property name="geometry">
+     <rect>
+      <x>471</x>
+      <y>345</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>550</y>
+      <width>241</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CALCULATE</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="runninglabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>10</y>
+      <width>1151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel#runninglabel {
+    background-color: rgba(20, 20, 20, 0.45); /* Nền tối mờ sang trọng */
+    color: #FFF8E7; /* Chữ màu kem nhạt đồng bộ với tiêu đề chính */
+    font-family: &quot;Segoe UI&quot;, sans-serif; /* Font chữ hiện đại, thanh thoát */
+    font-size: 11pt;
+    font-weight: bold;
+    border-radius: 12px; /* Bo tròn đều 2 đầu như viên thuốc */
+    padding: 5px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Viền sáng nhẹ tinh tế */
+}</string>
+    </property>
+    <property name="text">
+     <string>🔥 Chào mừng đến với GPA Target Simulator - Chinh phục điểm số A+ trong tầm tay! 🔥</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="rightgroup">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>190</y>
+      <width>331</width>
+      <height>351</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>PREDICTION RESULT</string>
+    </property>
+    <widget class="QLabel" name="lblGPA">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Projected GPA:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblstatus">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>140</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Status:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbladvice">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>230</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Advice</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_2">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>40</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_3">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>140</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_4">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>210</y>
+       <width>191</width>
+       <height>121</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLineEdit" name="tinchi4_2">
+    <property name="geometry">
+     <rect>
+      <x>31</x>
+      <y>294</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+    <property name="placeholderText">
+     <string>nhập tên môn</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tinchi1_2">
+    <property name="geometry">
+     <rect>
+      <x>31</x>
+      <y>141</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+    <property name="placeholderText">
+     <string>nhập tên môn</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tinchi3_2">
+    <property name="geometry">
+     <rect>
+      <x>31</x>
+      <y>192</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+    <property name="placeholderText">
+     <string>nhập tên môn</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tinchi2_2">
+    <property name="geometry">
+     <rect>
+      <x>31</x>
+      <y>243</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+    <property name="placeholderText">
+     <string>nhập tên môn</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tinchi5_2">
+    <property name="geometry">
+     <rect>
+      <x>31</x>
+      <y>345</y>
+      <width>125</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #f5f6fa;
+}
+QLineEdit:focus {
+    border: 1px solid #40739e;
+    background-color: #ffffff;
+}</string>
+    </property>
+    <property name="placeholderText">
+     <string>nhập tên môn</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1151</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources>
+  <include location="Images/resourses.qrc"/>
+ </resources>
+ <connections/>
+</ui>
