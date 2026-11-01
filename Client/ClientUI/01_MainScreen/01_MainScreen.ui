@@ -123,16 +123,16 @@ QLabel#lbl_dong_vien { color: rgba(255, 255, 255, 225); font-size: 12px; }
 QFrame#line_divider_1, QFrame#line_divider_2 {
     background: transparent; border: none; border-top: 1px solid rgba(255, 255, 255, 90); max-height: 1px;
 }
-QFrame#stat_card_credits, QFrame#stat_card_points, QFrame#stat_card_scale {
+QFrame#stat_card_credits, QFrame#stat_card_scale {
     background-color: rgba(255, 255, 255, 238); border: none; border-radius: 18px;
 }
-QLabel#icon_credits, QLabel#icon_points, QLabel#icon_scale {
+QLabel#icon_credits, QLabel#icon_scale {
     background-color: #CCE5FF; border-radius: 17px; padding: 8px;
 }
-QLabel#lbl_txt_tong_tin_chi, QLabel#lbl_txt_tong_diem, QLabel#lbl_txt_thang_diem {
+QLabel#lbl_txt_tong_tin_chi, QLabel#lbl_txt_thang_diem {
     color: #4B5565; font-size: 13px; font-weight: 600;
 }
-QLabel#lbl_tong_tin_chi, QLabel#lbl_tong_diem, QLabel#lbl_thang_diem {
+QLabel#lbl_tong_tin_chi, QLabel#lbl_thang_diem {
     color: #16181E; font-size: 16px; font-weight: 800;
 }
 QLabel#lbl_tieu_de_muc_tieu { color: #FFFFFF; font-size: 13px; font-weight: 700; }
@@ -354,7 +354,7 @@ QLabel#lbl_cong_thuc { color: #FFFFFF; font-size: 12px; font-weight: 600; }
              </column>
              <column>
               <property name="text">
-               <string> </string>
+               <string></string>
               </property>
              </column>
             </widget>
@@ -1093,82 +1093,6 @@ QLabel#lbl_cong_thuc { color: #FFFFFF; font-size: 12px; font-weight: 600; }
              <widget class="QLabel" name="lbl_tong_tin_chi">
               <property name="text">
                <string>17</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QFrame" name="stat_card_points">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>54</height>
-            </size>
-           </property>
-           <layout class="QHBoxLayout" name="stat_points_layout">
-            <property name="spacing">
-             <number>12</number>
-            </property>
-            <property name="leftMargin">
-             <number>12</number>
-            </property>
-            <property name="topMargin">
-             <number>8</number>
-            </property>
-            <property name="rightMargin">
-             <number>18</number>
-            </property>
-            <property name="bottomMargin">
-             <number>8</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="icon_points">
-              <property name="minimumSize">
-               <size>
-                <width>34</width>
-                <height>34</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>34</width>
-                <height>34</height>
-               </size>
-              </property>
-              <property name="pixmap">
-               <pixmap>icons/star_blue.svg</pixmap>
-              </property>
-              <property name="scaledContents">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="lbl_txt_tong_diem">
-              <property name="text">
-               <string>Tổng điểm tích lũy (Hệ 4)</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="sp_points">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="lbl_tong_diem">
-              <property name="text">
-               <string>58.00</string>
               </property>
              </widget>
             </item>

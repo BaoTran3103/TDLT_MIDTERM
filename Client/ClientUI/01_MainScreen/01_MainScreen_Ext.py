@@ -55,7 +55,6 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
 
         set_label(self.lbl_header_icon, "graduation-cap_white.svg")
         set_label(self.icon_credits, "book-open_blue.svg")
-        set_label(self.icon_points, "star_blue.svg")
         set_label(self.icon_scale, "award_blue.svg")
         set_label(self.icon_target, "target_white.svg")
         set_label(self.icon_info, "lightbulb_white.svg")
@@ -378,9 +377,7 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         """Nạp danh sách môn học mẫu ban đầu"""
         ds_mau = [
             ("Toán cao cấp 1 (Calculus I)", 4, 9.2),
-            ("Vật lý đại cương (Physics I)", 4, 8.4),
-            ("Anh văn học thuật (English Comp)", 3, 7.8),
-            ("Nhập môn lập trình (CS 101)", 3, 8.0),
+            ("Tư duy lập trình", 3, 8.0),
             ("Triết học Mác - Lênin", 3, 6.8),
         ]
         for ten, tin_chi, diem in ds_mau:
@@ -1008,28 +1005,24 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         return ds
 
     def tinh_gpa_hien_tai(self):
-        """Tính tổng tín chỉ, tổng điểm, GPA và tô sáng chip thang điểm tương ứng"""
+        """Tính tổng tín chỉ, GPA và tô sáng chip thang điểm tương ứng"""
         ds_mon = self.lay_du_lieu_mon()
         tong_tc_toan_bo = sum(mon["tin_chi"] for mon in ds_mon)
 
         # GPA hệ 4 dùng để xếp loại và tính điểm cần đạt
         ds_he_4 = [(m["tin_chi"], m["diem"]) for m in ds_mon if m["diem"] is not None]
-        tong_tc_co_diem, tong_diem_he_4, gpa = self.tinh_gpa_theo_diem(ds_he_4)
+        tong_tc_co_diem, _, gpa = self.tinh_gpa_theo_diem(ds_he_4)
 
         # GPA hiển thị: theo hệ người dùng đang chọn
         if self.che_do_diem == "HE_10":
-            _, tong_diem_hien_thi, gpa_hien_thi = self.tinh_gpa_theo_diem(
-                self._lay_diem_goc_theo_he_dang_chon())
-            self.lbl_txt_tong_diem.setText("Tổng điểm tích lũy (Hệ 10)")
+            _, _, gpa_hien_thi = self.tinh_gpa_theo_diem(self._lay_diem_goc_theo_he_dang_chon())
             self.lbl_thang_diem.setText("10.00")
         else:
-            tong_diem_hien_thi, gpa_hien_thi = tong_diem_he_4, gpa
-            self.lbl_txt_tong_diem.setText("Tổng điểm tích lũy (Hệ 4)")
+            gpa_hien_thi = gpa
             self.lbl_thang_diem.setText("4.00")
 
         tc_text = str(int(tong_tc_toan_bo)) if float(tong_tc_toan_bo).is_integer() else f"{tong_tc_toan_bo:.1f}"
         self.lbl_tong_tin_chi.setText(tc_text)
-        self.lbl_tong_diem.setText(f"{tong_diem_hien_thi:.2f}")
         self.lbl_gpa_hien_tai.setText(f"{gpa_hien_thi:.2f}")
 
         if tong_tc_co_diem == 0:

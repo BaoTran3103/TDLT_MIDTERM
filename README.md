@@ -20,7 +20,7 @@
 **Thang điểm Hệ 10 và Hệ 4**
 - Chuyển thang bằng hai nút trên bảng, điểm đã nhập tự quy đổi.
 - Tiêu đề cột và ô nhập hiển thị mức tối đa (0 - 10 hoặc 0 - 4).
-- GPA, tổng điểm tích lũy, thang điểm tối đa và công thức đều đổi theo thang đang chọn.
+- GPA, tổng số tín chỉ, thang điểm tối đa và công thức đều đổi theo thang đang chọn.
 
 **Kiểm tra dữ liệu**
 - Tên môn không để trống.
@@ -67,7 +67,6 @@ TDLT_MIDTERM/
 ├── Client/
 │   ├── ClientDataset/
 │   └── ClientUI/
-│       ├── 01_FirstScreen/
 │       └── 01_MainScreen/
 │           ├── 01_MainScreen.ui        # giao diện (Qt Designer)
 │           ├── 01_MainScreen.py        # sinh từ .ui, không sửa tay
@@ -86,7 +85,7 @@ Mỗi màn hình mới là một thư mục `<số>_<TênMànHình>/` gồm 3 fi
 Yêu cầu: Python 3.10 trở lên.
 
 ```bash
-git clone <link-repo>
+git clone https://github.com/BaoTran3103/TDLT_MIDTERM.git
 cd TDLT_MIDTERM
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate

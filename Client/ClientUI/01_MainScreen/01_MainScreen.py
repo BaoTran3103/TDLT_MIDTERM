@@ -122,16 +122,16 @@ class Ui_MainScreen(object):
 "QFrame#line_divider_1, QFrame#line_divider_2 {\n"
 "    background: transparent; border: none; border-top: 1px solid rgba(255, 255, 255, 90); max-height: 1px;\n"
 "}\n"
-"QFrame#stat_card_credits, QFrame#stat_card_points, QFrame#stat_card_scale {\n"
+"QFrame#stat_card_credits, QFrame#stat_card_scale {\n"
 "    background-color: rgba(255, 255, 255, 238); border: none; border-radius: 18px;\n"
 "}\n"
-"QLabel#icon_credits, QLabel#icon_points, QLabel#icon_scale {\n"
+"QLabel#icon_credits, QLabel#icon_scale {\n"
 "    background-color: #CCE5FF; border-radius: 17px; padding: 8px;\n"
 "}\n"
-"QLabel#lbl_txt_tong_tin_chi, QLabel#lbl_txt_tong_diem, QLabel#lbl_txt_thang_diem {\n"
+"QLabel#lbl_txt_tong_tin_chi, QLabel#lbl_txt_thang_diem {\n"
 "    color: #4B5565; font-size: 13px; font-weight: 600;\n"
 "}\n"
-"QLabel#lbl_tong_tin_chi, QLabel#lbl_tong_diem, QLabel#lbl_thang_diem {\n"
+"QLabel#lbl_tong_tin_chi, QLabel#lbl_thang_diem {\n"
 "    color: #16181E; font-size: 16px; font-weight: 800;\n"
 "}\n"
 "QLabel#lbl_tieu_de_muc_tieu { color: #FFFFFF; font-size: 13px; font-weight: 700; }\n"
@@ -490,29 +490,6 @@ class Ui_MainScreen(object):
         self.lbl_tong_tin_chi.setObjectName("lbl_tong_tin_chi")
         self.stat_credits_layout.addWidget(self.lbl_tong_tin_chi)
         self.card_summary_layout.addWidget(self.stat_card_credits)
-        self.stat_card_points = QtWidgets.QFrame(parent=self.card_summary)
-        self.stat_card_points.setMinimumSize(QtCore.QSize(0, 54))
-        self.stat_card_points.setObjectName("stat_card_points")
-        self.stat_points_layout = QtWidgets.QHBoxLayout(self.stat_card_points)
-        self.stat_points_layout.setContentsMargins(12, 8, 18, 8)
-        self.stat_points_layout.setSpacing(12)
-        self.stat_points_layout.setObjectName("stat_points_layout")
-        self.icon_points = QtWidgets.QLabel(parent=self.stat_card_points)
-        self.icon_points.setMinimumSize(QtCore.QSize(34, 34))
-        self.icon_points.setMaximumSize(QtCore.QSize(34, 34))
-        self.icon_points.setPixmap(QtGui.QPixmap("/Volumes/PROJECTS/TDLT_MIDTERM/Client/ClientUI/01_MainScreen/icons/star_blue.svg"))
-        self.icon_points.setScaledContents(True)
-        self.icon_points.setObjectName("icon_points")
-        self.stat_points_layout.addWidget(self.icon_points)
-        self.lbl_txt_tong_diem = QtWidgets.QLabel(parent=self.stat_card_points)
-        self.lbl_txt_tong_diem.setObjectName("lbl_txt_tong_diem")
-        self.stat_points_layout.addWidget(self.lbl_txt_tong_diem)
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.stat_points_layout.addItem(spacerItem4)
-        self.lbl_tong_diem = QtWidgets.QLabel(parent=self.stat_card_points)
-        self.lbl_tong_diem.setObjectName("lbl_tong_diem")
-        self.stat_points_layout.addWidget(self.lbl_tong_diem)
-        self.card_summary_layout.addWidget(self.stat_card_points)
         self.stat_card_scale = QtWidgets.QFrame(parent=self.card_summary)
         self.stat_card_scale.setMinimumSize(QtCore.QSize(0, 54))
         self.stat_card_scale.setObjectName("stat_card_scale")
@@ -530,8 +507,8 @@ class Ui_MainScreen(object):
         self.lbl_txt_thang_diem = QtWidgets.QLabel(parent=self.stat_card_scale)
         self.lbl_txt_thang_diem.setObjectName("lbl_txt_thang_diem")
         self.stat_scale_layout.addWidget(self.lbl_txt_thang_diem)
-        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.stat_scale_layout.addItem(spacerItem5)
+        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.stat_scale_layout.addItem(spacerItem4)
         self.lbl_thang_diem = QtWidgets.QLabel(parent=self.stat_card_scale)
         self.lbl_thang_diem.setObjectName("lbl_thang_diem")
         self.stat_scale_layout.addWidget(self.lbl_thang_diem)
@@ -557,8 +534,8 @@ class Ui_MainScreen(object):
         self.lbl_tieu_de_muc_tieu = QtWidgets.QLabel(parent=self.card_summary)
         self.lbl_tieu_de_muc_tieu.setObjectName("lbl_tieu_de_muc_tieu")
         self.target_title_layout.addWidget(self.lbl_tieu_de_muc_tieu)
-        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.target_title_layout.addItem(spacerItem6)
+        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.target_title_layout.addItem(spacerItem5)
         self.target_gpa_layout.addLayout(self.target_title_layout)
         self.txt_gpa_muc_tieu = QtWidgets.QLineEdit(parent=self.card_summary)
         self.txt_gpa_muc_tieu.setMinimumSize(QtCore.QSize(0, 44))
@@ -569,8 +546,8 @@ class Ui_MainScreen(object):
         self.lbl_diem_can_dat.setObjectName("lbl_diem_can_dat")
         self.target_gpa_layout.addWidget(self.lbl_diem_can_dat)
         self.card_summary_layout.addLayout(self.target_gpa_layout)
-        spacerItem7 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.card_summary_layout.addItem(spacerItem7)
+        spacerItem6 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.card_summary_layout.addItem(spacerItem6)
         self.frame_tip = QtWidgets.QFrame(parent=self.card_summary)
         self.frame_tip.setMinimumSize(QtCore.QSize(0, 58))
         self.frame_tip.setObjectName("frame_tip")
@@ -578,8 +555,8 @@ class Ui_MainScreen(object):
         self.frame_tip_layout.setContentsMargins(14, 8, 14, 8)
         self.frame_tip_layout.setSpacing(10)
         self.frame_tip_layout.setObjectName("frame_tip_layout")
-        spacerItem8 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.frame_tip_layout.addItem(spacerItem8)
+        spacerItem7 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.frame_tip_layout.addItem(spacerItem7)
         self.icon_info = QtWidgets.QLabel(parent=self.frame_tip)
         self.icon_info.setMinimumSize(QtCore.QSize(28, 28))
         self.icon_info.setMaximumSize(QtCore.QSize(28, 28))
@@ -592,8 +569,8 @@ class Ui_MainScreen(object):
         self.lbl_cong_thuc.setWordWrap(False)
         self.lbl_cong_thuc.setObjectName("lbl_cong_thuc")
         self.frame_tip_layout.addWidget(self.lbl_cong_thuc)
-        spacerItem9 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.frame_tip_layout.addItem(spacerItem9)
+        spacerItem8 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.frame_tip_layout.addItem(spacerItem8)
         self.card_summary_layout.addWidget(self.frame_tip)
         self.body_layout.addWidget(self.card_summary)
         self.main_vertical_layout.addLayout(self.body_layout)
@@ -654,8 +631,6 @@ class Ui_MainScreen(object):
         self.lbl_dong_vien.setText(_translate("MainScreen", "Kết quả rất tốt, hãy tiếp tục duy trì nhé!"))
         self.lbl_txt_tong_tin_chi.setText(_translate("MainScreen", "Tổng số tín chỉ"))
         self.lbl_tong_tin_chi.setText(_translate("MainScreen", "17"))
-        self.lbl_txt_tong_diem.setText(_translate("MainScreen", "Tổng điểm tích lũy (Hệ 4)"))
-        self.lbl_tong_diem.setText(_translate("MainScreen", "58.00"))
         self.lbl_txt_thang_diem.setText(_translate("MainScreen", "Thang điểm tối đa"))
         self.lbl_thang_diem.setText(_translate("MainScreen", "4.00"))
         self.lbl_tieu_de_muc_tieu.setText(_translate("MainScreen", "GPA Mục Tiêu Mong Muốn:"))
