@@ -6,7 +6,7 @@
 
 **Hai màn hình**
 - Màn hình nhập môn học: chỉ hiện danh sách môn học và nút **Tính GPA**.
-- Màn hình kết quả: hiện sau khi bấm **Tính GPA** và dữ liệu hợp lệ, gồm GPA, xếp loại, thang điểm quy đổi và GPA mục tiêu. Nút **Quay lại** ở góc phải trên để về màn hình nhập.
+- Màn hình kết quả: hiện sau khi bấm **Tính GPA** và dữ liệu hợp lệ, gồm GPA, xếp loại, tổng số tín chỉ và GPA mục tiêu. Nút **Quay lại** ở góc phải trên để về màn hình nhập.
 
 **Bảng môn học**
 - Cột số thứ tự tự đánh lại khi thêm hoặc xóa dòng.
@@ -17,19 +17,18 @@
   - Ctrl (⌘ trên Mac) + click: thêm hoặc bỏ từng dòng.
 - Điểm chữ tự cập nhật theo điểm nhập.
 
-**Thang điểm Hệ 10 và Hệ 4**
-- Chuyển thang bằng hai nút trên bảng, điểm đã nhập tự quy đổi.
-- Tiêu đề cột và ô nhập hiển thị mức tối đa (0 - 10 hoặc 0 - 4).
-- GPA, tổng số tín chỉ, thang điểm tối đa và công thức đều đổi theo thang đang chọn.
+**Thang điểm Hệ 10**
+- Điểm nhập theo thang 10, tiêu đề cột và ô nhập hiển thị mức tối đa (0 - 10).
+- GPA, thang điểm tối đa và công thức đều tính theo thang 10.
 
 **Kiểm tra dữ liệu**
 - Tên môn không để trống.
 - Số tín chỉ lớn hơn 0 và tối đa 10.
-- Điểm nằm trong thang đang chọn, hoặc để trống nếu môn chưa có điểm.
+- Điểm nằm trong khoảng 0 - 10, hoặc để trống nếu môn chưa có điểm.
 - Ô sai được viền đỏ, hộp thoại báo lỗi nêu rõ dòng nào sai.
 
 **GPA mục tiêu**
-- Nhập mục tiêu theo thang đang chọn.
+- Nhập mục tiêu theo thang 10.
 - Hiển thị điểm trung bình tối thiểu cần đạt và liệt kê từng môn chưa có điểm.
 - Báo "Không khả thi" hoặc "Đã đạt mục tiêu" khi phù hợp.
 
@@ -41,18 +40,18 @@ GPA = ∑ (Điểm × Số tín chỉ) / ∑ Số tín chỉ
 
 Chỉ tính các môn đã có điểm. Điểm chỉ làm tròn khi hiển thị (2 chữ số thập phân).
 
-Bảng quy đổi theo quy chế đào tạo:
+Bảng điểm chữ theo quy chế đào tạo:
 
-| Điểm chữ | Thang 10 | Thang 4 | Xếp loại |
-|---|---|---|---|
-| A+ | 9.0 - 10.0 | 4.0 | Xuất sắc |
-| A | 8.0 - 8.9 | 3.5 | Giỏi |
-| B+ | 7.0 - 7.9 | 3.0 | Khá |
-| B | 6.0 - 6.9 | 2.5 | Trung bình khá |
-| C | 5.0 - 5.9 | 2.0 | Trung bình |
-| D+ | 4.0 - 4.9 | 1.5 | Yếu |
-| D | 3.0 - 3.9 | 1.0 | Kém |
-| F | dưới 3.0 | 0.0 | Kém |
+| Điểm chữ | Thang 10 | Xếp loại |
+|---|---|---|
+| A+ | 9.0 - 10.0 | Xuất sắc |
+| A | 8.0 - 8.9 | Giỏi |
+| B+ | 7.0 - 7.9 | Khá |
+| B | 6.0 - 6.9 | Trung bình khá |
+| C | 5.0 - 5.9 | Trung bình |
+| D+ | 4.0 - 4.9 | Yếu |
+| D | 3.0 - 3.9 | Kém |
+| F | dưới 3.0 | Kém |
 
 ## Ảnh chụp màn hình
 
@@ -98,10 +97,10 @@ python MyApp.py
 Dữ liệu một môn dùng chung toàn nhóm:
 
 ```python
-{"ten": "Toan", "tin_chi": 3, "diem": 3.5}   # chưa có điểm: "diem": None
+{"ten": "Toan", "tin_chi": 3, "diem": 8.5}   # chưa có điểm: "diem": None
 ```
 
-Trong `lay_du_lieu_mon()`, trường `diem` luôn là điểm quy đổi theo thang 4.
+Trong `lay_du_lieu_mon()`, trường `diem` luôn là điểm thang 10 do người dùng nhập.
 
 ## Phân công
 
