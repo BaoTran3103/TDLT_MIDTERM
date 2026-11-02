@@ -5,7 +5,7 @@ import importlib
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QTableWidgetItem, QLineEdit,
-    QPushButton, QLabel, QHBoxLayout, QMessageBox, QHeaderView, QButtonGroup
+    QPushButton, QLabel, QHBoxLayout, QMessageBox, QHeaderView
 )
 from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtCore import QSize, QEvent, QTimer, QItemSelection, QItemSelectionModel
@@ -27,8 +27,6 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         super().__init__(parent)
         self.setupUi(self)
 
-        # Biến trạng thái: "HE_10" hoặc "HE_4"
-        self.che_do_diem = "HE_10"
         # Dòng làm mốc khi chọn nhiều dòng bằng Shift
         self.dong_neo = None
         # Chặn hiện nhiều hộp thoại lỗi chồng nhau
@@ -36,12 +34,11 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
 
         self._cai_dat_icon_svg()
         self._cai_dat_cong_thuc()
-        self._cai_dat_nhom_nut_he()
         self._cai_dat_bang()
         self._ket_noi_su_kien()
         self._cai_dat_man_hinh()
         self._khoi_tao_du_lieu_mau()
-        self._cap_nhat_goi_y_theo_he()
+        self._cai_dat_goi_y()
         self.tinh_gpa_hien_tai()
 
     def _cai_dat_icon_svg(self):
@@ -92,71 +89,6 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         for w in ((lbl_icon, lbl_chu) if co_icon else (lbl_chu,)):
             w.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents)
             lay.addWidget(w)
-
-    def _cai_dat_nhom_nut_he(self):
-        self.group_he_diem = QButtonGroup(self)
-        self.group_he_diem.setExclusive(True)
-        self.group_he_diem.addButton(self.btn_he_10)
-        self.group_he_diem.addButton(self.btn_he_4)
-
-        self.btn_he_10.setChecked(True)
-        self.btn_he_10.clicked.connect(lambda: self._chuyen_che_do_he("HE_10"))
-        self.btn_he_4.clicked.connect(lambda: self._chuyen_che_do_he("HE_4"))
-
-    def _chuyen_che_do_he(self, che_do: str):
-        """Xử lý khi người dùng chuyển giữa Hệ 10 và Hệ 4"""
-        if self.che_do_diem == che_do:
-            return
-
-        che_do_cu = self.che_do_diem
-        self.che_do_diem = che_do
-
-        # Cập nhật tiêu đề cột điểm và thẻ quy chế
-        if che_do == "HE_10":
-            self.lbl_scale_title.setText("Thang Điểm Quy Đổi (Theo Thang 10)")
-            self._cap_nhat_card_scale_he_10()
-        else:
-            self.lbl_scale_title.setText("Thang Điểm Quy Đổi (Theo Thang 4)")
-            self._cap_nhat_card_scale_he_4()
-
-        # Tự động quy đổi giá trị trong các ô điểm hiện có
-        for r in range(self.tbl_mon_hoc.rowCount()):
-            txt_score = self.tbl_mon_hoc.cellWidget(r, 2)
-            if txt_score and txt_score.text().strip():
-                hop_le_cu, _ = self.kiem_tra_diem(txt_score.text(), che_do_cu)
-                try:
-                    if not hop_le_cu:
-                        # Điểm đang sai ở thang cũ thì giữ nguyên, để kiểm tra lại theo thang mới
-                        raise ValueError
-                    val = float(txt_score.text().strip().replace(",", "."))
-                    if che_do_cu == "HE_10" and che_do == "HE_4":
-                        # Đổi từ 10 sang 4 xấp xỉ
-                        val_4 = min(4.0, max(0.0, (val / 10.0) * 4.0))
-                        txt_score.setText(f"{val_4:.2f}")
-                    elif che_do_cu == "HE_4" and che_do == "HE_10":
-                        # Đổi từ 4 sang 10 xấp xỉ
-                        val_10 = min(10.0, max(0.0, (val / 4.0) * 10.0))
-                        txt_score.setText(f"{val_10:.1f}")
-                except ValueError:
-                    pass
-            self._on_score_text_changed(r)
-
-        # Quy đổi luôn ô GPA mục tiêu nếu đang hợp lệ ở thang cũ
-        text_mt = self.txt_gpa_muc_tieu.text().strip().replace(",", ".")
-        try:
-            mt = float(text_mt)
-            if 0 <= mt <= self.DIEM_TOI_DA[che_do_cu]:
-                if che_do_cu == "HE_10":
-                    self.txt_gpa_muc_tieu.setText(f"{mt / 10.0 * 4.0:.2f}")
-                else:
-                    self.txt_gpa_muc_tieu.setText(f"{mt / 4.0 * 10.0:.1f}")
-        except ValueError:
-            pass
-
-        # Cập nhật lại tiêu đề cột, gợi ý nhập, GPA, tổng điểm và công thức theo hệ vừa chọn
-        self._cap_nhat_goi_y_theo_he()
-        self._cai_dat_cong_thuc()
-        self.tinh_gpa_hien_tai()
 
     def _cai_dat_bang(self):
         """Cấu hình bảng tbl_mon_hoc 5 cột chuẩn"""
@@ -315,7 +247,6 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
     def _chuyen_man_hinh(self, hien_ket_qua: bool):
         """Chuyển giữa màn hình nhập môn học (False) và màn hình kết quả đầy đủ (True)"""
         self.card_summary.setVisible(hien_ket_qua)
-        self.card_scale.setVisible(hien_ket_qua)
         self.btn_quay_lai.setVisible(hien_ket_qua)
         self.btn_tinh_gpa.setVisible(not hien_ket_qua)
 
@@ -347,11 +278,9 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         text_mt = self.txt_gpa_muc_tieu.text().strip()
         if text_mt:
             mt = self._doc_so(text_mt)
-            toi_da = self.DIEM_TOI_DA[self.che_do_diem]
-            ten_he = "10" if self.che_do_diem == "HE_10" else "4"
-            if mt is None or mt < 0 or mt > toi_da:
-                loi.append(f"GPA mục tiêu phải là một số trong khoảng từ 0 đến {toi_da:g} "
-                           f"theo thang điểm hệ {ten_he}.")
+            if mt is None or mt < 0 or mt > self.DIEM_TOI_DA:
+                loi.append(f"GPA mục tiêu phải là một số trong khoảng từ 0 đến {self.DIEM_TOI_DA:g} "
+                           "theo thang điểm hệ 10.")
 
         if loi:
             TOI_DA_HIEN = 6
@@ -385,52 +314,13 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
 
     def quy_doi_diem(self, diem_so: float):
         """
-        Quy đổi chuẩn theo Quy chế đào tạo đại học (UEL / ĐHQG-HCM):
-        | Xếp loại        | Thang 10       | Thang 4 số | Điểm chữ |
-        | Xuất sắc        | 9.0 - 10.0     | 4.0        | A+       |
-        | Giỏi            | 8.0 - cận 9.0  | 3.5        | A        |
-        | Khá             | 7.0 - cận 8.0  | 3.0        | B+       |
-        | Trung bình khá  | 6.0 - cận 7.0  | 2.5        | B        |
-        | Trung bình      | 5.0 - cận 6.0  | 2.0        | C        |
-        | Yếu             | 4.0 - cận 5.0  | 1.5        | D+       |
-        | Kém             | 3.0 - cận 4.0  | 1.0        | D        |
-        | Kém             | < 3.0          | 0.0        | F        |
+        Quy đổi điểm hệ 10 sang điểm chữ và xếp loại theo bảng BANG_DIEM_CHU.
+        Trả về (điểm chữ, xếp loại).
         """
-        if self.che_do_diem == "HE_10":
-            if diem_so >= 9.0:
-                return "A+", 4.0, "Xuất sắc"
-            elif diem_so >= 8.0:
-                return "A", 3.5, "Giỏi"
-            elif diem_so >= 7.0:
-                return "B+", 3.0, "Khá"
-            elif diem_so >= 6.0:
-                return "B", 2.5, "Trung bình khá"
-            elif diem_so >= 5.0:
-                return "C", 2.0, "Trung bình"
-            elif diem_so >= 4.0:
-                return "D+", 1.5, "Yếu"
-            elif diem_so >= 3.0:
-                return "D", 1.0, "Kém"
-            else:
-                return "F", 0.0, "Kém"
-        else:
-            # Nhập điểm hệ 4 trực tiếp
-            if diem_so >= 3.8:
-                return "A+", 4.0, "Xuất sắc"
-            elif diem_so >= 3.4:
-                return "A", 3.5, "Giỏi"
-            elif diem_so >= 2.9:
-                return "B+", 3.0, "Khá"
-            elif diem_so >= 2.4:
-                return "B", 2.5, "Trung bình khá"
-            elif diem_so >= 1.9:
-                return "C", 2.0, "Trung bình"
-            elif diem_so >= 1.4:
-                return "D+", 1.5, "Yếu"
-            elif diem_so >= 0.9:
-                return "D", 1.0, "Kém"
-            else:
-                return "F", 0.0, "Kém"
+        for can_duoi, chu, xep_loai in self.BANG_DIEM_CHU:
+            if diem_so >= can_duoi:
+                return chu, xep_loai
+        return "F", "Kém"
 
     def them_mon(self, ten: str = "", tin_chi: int = 3, diem_nhap: float = None):
         row = self.tbl_mon_hoc.rowCount()
@@ -578,7 +468,7 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
     # ------------------------------------------------------------------
     # Kiểm tra dữ liệu nhập (trả về (hop_le, thong_bao) theo CONVENTION)
     # ------------------------------------------------------------------
-    DIEM_TOI_DA = {"HE_10": 10.0, "HE_4": 4.0}
+    DIEM_TOI_DA = 10.0
     TIN_CHI_TOI_DA = 10
 
     @staticmethod
@@ -590,20 +480,16 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
             return None
         return val if math.isfinite(val) else None
 
-    def kiem_tra_diem(self, text: str, che_do: str = None):
-        """Kiểm tra điểm số nhập vào có nằm trong thang điểm đang chọn không. Ô trống là hợp lệ"""
-        che_do = che_do or self.che_do_diem
+    def kiem_tra_diem(self, text: str):
+        """Kiểm tra điểm số nhập vào có nằm trong thang 10 không. Ô trống là hợp lệ"""
         if not text.strip():
             return True, ""
         val = self._doc_so(text)
-        ten_he = "10" if che_do == "HE_10" else "4"
-        toi_da = self.DIEM_TOI_DA[che_do]
         if val is None:
-            return False, (f"Điểm số phải là một số hợp lệ "
-                           f"(ví dụ: {'8.5' if che_do == 'HE_10' else '3.5'}).")
-        if val < 0 or val > toi_da:
-            return False, (f"Điểm số phải nằm trong khoảng từ 0 đến {toi_da:g} "
-                           f"theo thang điểm hệ {ten_he} (giá trị đã nhập: {val:g}).")
+            return False, "Điểm số phải là một số hợp lệ (ví dụ: 8.5)."
+        if val < 0 or val > self.DIEM_TOI_DA:
+            return False, (f"Điểm số phải nằm trong khoảng từ 0 đến {self.DIEM_TOI_DA:g} "
+                           f"theo thang điểm hệ 10 (giá trị đã nhập: {val:g}).")
         return True, ""
 
     def kiem_tra_tin_chi(self, text: str):
@@ -619,30 +505,18 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         return True, ""
 
     def _goi_y_diem(self) -> str:
-        toi_da = self.DIEM_TOI_DA[self.che_do_diem]
-        ten_he = "10" if self.che_do_diem == "HE_10" else "4"
-        return f"Nhập điểm từ 0 đến {toi_da:g} (thang {ten_he})"
+        return f"Nhập điểm từ 0 đến {self.DIEM_TOI_DA:g} (thang 10)"
 
     def _goi_y_tin_chi(self) -> str:
         return f"Nhập số tín chỉ từ 1 đến {self.TIN_CHI_TOI_DA}"
 
     def _placeholder_diem(self) -> str:
-        return "VD: 8.5 (0 - 10)" if self.che_do_diem == "HE_10" else "VD: 3.5 (0 - 4)"
+        return "VD: 8.5 (0 - 10)"
 
-    def _cap_nhat_goi_y_theo_he(self):
-        """Cập nhật tiêu đề cột, placeholder và tooltip theo thang điểm đang chọn để người dùng biết mức tối đa"""
-        he10 = self.che_do_diem == "HE_10"
-        toi_da = self.DIEM_TOI_DA[self.che_do_diem]
-        self.tbl_mon_hoc.horizontalHeaderItem(2).setText(
-            f"Điểm số (Hệ {'10' if he10 else '4'}: 0 - {toi_da:g})")
-        for r in range(self.tbl_mon_hoc.rowCount()):
-            txt_score = self.tbl_mon_hoc.cellWidget(r, 2)
-            if txt_score:
-                txt_score.setPlaceholderText(self._placeholder_diem())
-        self.txt_gpa_muc_tieu.setPlaceholderText(
-            f"Ví dụ: {'8.0' if he10 else '3.20'} (tối đa {toi_da:g})")
+    def _cai_dat_goi_y(self):
+        """Đặt tooltip cho ô GPA mục tiêu (nhập theo thang 10)"""
         self.txt_gpa_muc_tieu.setToolTip(
-            f"Nhập GPA mong muốn theo thang {'10' if he10 else '4'}, từ 0 đến {toi_da:g}.\n"
+            f"Nhập GPA mong muốn theo thang 10, từ 0 đến {self.DIEM_TOI_DA:g}.\n"
             "Để trống ô điểm của môn chưa học để tính điểm cần đạt cho môn đó.")
 
     def _dat_loi(self, o: QLineEdit, thong_bao: str, goi_y: str):
@@ -689,7 +563,7 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         if not text:
             # Chưa nhập điểm
             lbl_grade.setText("--")
-            lbl_grade.setProperty("diem_he_4", None)
+            lbl_grade.setProperty("diem_so", None)
             lbl_grade.setStyleSheet("""
                 background-color: #F4F7FB;
                 border: 1px solid #E1E8F3;
@@ -701,7 +575,7 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
             """)
         elif not hop_le:
             lbl_grade.setText("Lỗi")
-            lbl_grade.setProperty("diem_he_4", None)
+            lbl_grade.setProperty("diem_so", None)
             lbl_grade.setStyleSheet("""
                 background-color: #FEF2F2;
                 border: 1.5px solid #FCA5A5;
@@ -713,9 +587,9 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
             """)
         else:
             diem_so = float(text)
-            grade_chu, diem_qd, _ = self.quy_doi_diem(diem_so)
+            grade_chu, _ = self.quy_doi_diem(diem_so)
             lbl_grade.setText(grade_chu)
-            lbl_grade.setProperty("diem_he_4", diem_qd)
+            lbl_grade.setProperty("diem_so", diem_so)
 
             # Màu sắc badge chữ cái điểm
             if "A" in grade_chu:
@@ -874,7 +748,7 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
     def lay_du_lieu_mon(self):
         """
         Đọc và trả về danh sách các môn học theo chuẩn CONVENTION.md:
-        [{"ten": "Toan", "tin_chi": 3, "diem": 3.5}, ...]
+        [{"ten": "Toan", "tin_chi": 3, "diem": 8.5}, ...]  (điểm theo thang 10)
         Nếu môn chưa nhập điểm, 'diem' sẽ là None.
         """
         ds_mon = []
@@ -888,47 +762,44 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
             hop_le_tc, _ = self.kiem_tra_tin_chi(txt_tc.text()) if txt_tc else (False, "")
             tin_chi = self._doc_so(txt_tc.text()) if hop_le_tc else 0.0
 
-            diem_qd = None
+            diem = None
             if txt_sc and txt_sc.text().strip() and lbl_grade:
-                diem_qd = lbl_grade.property("diem_he_4")
+                diem = lbl_grade.property("diem_so")
 
             ds_mon.append({
                 "ten": ten,
                 "tin_chi": tin_chi,
-                "diem": diem_qd
+                "diem": diem
             })
         return ds_mon
 
     # ------------------------------------------------------------------
     # Hằng số dùng chung
     # ------------------------------------------------------------------
-    # (ngưỡng GPA, chỉ số chip thang điểm, xếp loại, lời động viên)
+    # (cận dưới thang 10, điểm chữ, xếp loại) - dùng cho cột Điểm chữ và GPA mục tiêu
+    BANG_DIEM_CHU = [
+        (9.0, "A+", "Xuất sắc"), (8.0, "A", "Giỏi"), (7.0, "B+", "Khá"),
+        (6.0, "B", "Trung bình khá"), (5.0, "C", "Trung bình"), (4.0, "D+", "Yếu"),
+        (3.0, "D", "Kém"), (0.0, "F", "Kém"),
+    ]
+    # (ngưỡng GPA thang 10, xếp loại, lời động viên)
     BAC_GPA = [
-        (3.6, 0, "Xuất sắc (A+)", "Phong độ cực đỉnh, tiếp tục phát huy nhé!"),
-        (3.2, 1, "Giỏi (A)", "Kết quả rất tốt, hãy tiếp tục duy trì nhé!"),
-        (2.85, 2, "Khá (B+)", "Cố gắng thêm chút nữa để chạm mốc Giỏi nhé!"),
-        (2.5, 3, "Khá (B)", "Cố gắng thêm chút nữa để chạm mốc Giỏi nhé!"),
-        (2.0, 4, "Trung bình (C)", "Cần tập trung học tập để cải thiện thứ hạng!"),
-        (1.5, 5, "Yếu (D+)", "Cần chú ý lập kế hoạch học tập nghiêm túc!"),
-        (1.0, 6, "Kém (D)", "Cần chú ý lập kế hoạch học tập nghiêm túc!"),
-        (0.0, 7, "Kém (F)", "Cần chú ý lập kế hoạch học tập nghiêm túc!"),
+        (9.0, "Xuất sắc (A+)", "Phong độ cực đỉnh, tiếp tục phát huy nhé!"),
+        (8.0, "Giỏi (A)", "Kết quả rất tốt, hãy tiếp tục duy trì nhé!"),
+        (7.0, "Khá (B+)", "Cố gắng thêm chút nữa để chạm mốc Giỏi nhé!"),
+        (6.0, "Khá (B)", "Cố gắng thêm chút nữa để chạm mốc Giỏi nhé!"),
+        (5.0, "Trung bình (C)", "Cần tập trung học tập để cải thiện thứ hạng!"),
+        (4.0, "Yếu (D+)", "Cần chú ý lập kế hoạch học tập nghiêm túc!"),
+        (3.0, "Kém (D)", "Cần chú ý lập kế hoạch học tập nghiêm túc!"),
+        (0.0, "Kém (F)", "Cần chú ý lập kế hoạch học tập nghiêm túc!"),
     ]
-    # (điểm hệ 4, điểm chữ, cận dưới thang 10) - dùng cho GPA mục tiêu
-    BANG_QUY_DOI = [
-        (4.0, "A+", 9.0), (3.5, "A", 8.0), (3.0, "B+", 7.0), (2.5, "B", 6.0),
-        (2.0, "C", 5.0), (1.5, "D+", 4.0), (1.0, "D", 3.0), (0.0, "F", 0.0),
-    ]
-    # Màu chữ cái từng chip khi KHÔNG được chọn
-    MAU_CHU_CHIP = ["#2D7BF3", "#2D7BF3", "#3F83E8", "#5A8FD6",
-                    "#6E7F99", "#69758C", "#5B6578", "#16181E"]
 
     def _cai_dat_cong_thuc(self):
         """Hiển thị công thức GPA dạng phân số (rich text)"""
-        he = "10" if self.che_do_diem == "HE_10" else "4"
         html = (
             '<table align="center" cellspacing="0" cellpadding="0"><tr>'
             '<td rowspan="3" valign="middle">GPA&nbsp;=&nbsp;&nbsp;</td>'
-            f'<td align="center">∑ (Điểm hệ {he} × Số tín chỉ)</td></tr>'
+            '<td align="center">∑ (Điểm hệ 10 × Số tín chỉ)</td></tr>'
             '<tr><td height="1" bgcolor="#FFFFFF" style="font-size:1px;"><span style="font-size:1px;">&nbsp;</span></td></tr>'
             '<tr><td align="center">∑ Số tín chỉ</td></tr></table>'
         )
@@ -950,30 +821,6 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
             lay.addSpacing(self.icon_info.maximumWidth())
             self._da_can_giua_cong_thuc = True
 
-    def _cap_nhat_chip_chon(self, chi_so):
-        """Tô sáng chip thang điểm tương ứng với GPA (chi_so = None: không chọn)"""
-        for i in range(8):
-            box = getattr(self, f"scale_box_{i + 1}")
-            lbl_g = getattr(self, f"lbl_g_{i + 1}")
-            lbl_p = getattr(self, f"lbl_p_{i + 1}")
-            lbl_t = getattr(self, f"lbl_t_{i + 1}")
-            if i == chi_so:
-                box.setStyleSheet(
-                    f"QFrame#scale_box_{i + 1} {{ background-color: qlineargradient("
-                    "x1:0, y1:0, x2:1, y2:1, stop:0 #2D7BF3, stop:1 #5B9BF8); "
-                    "border: none; border-radius: 16px; }")
-                lbl_g.setStyleSheet("font-weight: 800; font-size: 14px; color: #FFFFFF;")
-                lbl_p.setStyleSheet("font-size: 11px; font-weight: 700; color: #FFFFFF;")
-                lbl_t.setStyleSheet("font-size: 10px; color: #DCEBFF;")
-            else:
-                box.setStyleSheet(
-                    f"QFrame#scale_box_{i + 1} {{ background-color: #F4F7FB; "
-                    "border: 1px solid #E6ECF5; border-radius: 16px; }")
-                lbl_g.setStyleSheet(
-                    f"font-weight: 800; font-size: 14px; color: {self.MAU_CHU_CHIP[i]};")
-                lbl_p.setStyleSheet("font-size: 11px; font-weight: 600; color: #16181E;")
-                lbl_t.setStyleSheet("font-size: 10px; color: #8A93A5;")
-
     @staticmethod
     def tinh_gpa_theo_diem(ds_diem):
         """
@@ -986,55 +833,26 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         gpa = tong_diem / tong_tc if tong_tc > 0 else 0.0
         return tong_tc, tong_diem, gpa
 
-    def _lay_diem_goc_theo_he_dang_chon(self):
-        """Lấy (tín chỉ, điểm đang nhập theo hệ hiện tại) của các môn đã có điểm hợp lệ"""
-        ds = []
-        for r in range(self.tbl_mon_hoc.rowCount()):
-            txt_tc = self.tbl_mon_hoc.cellWidget(r, 1)
-            txt_sc = self.tbl_mon_hoc.cellWidget(r, 2)
-            lbl_grade = self.tbl_mon_hoc.cellWidget(r, 3)
-            if not (txt_tc and txt_sc and lbl_grade):
-                continue
-            if lbl_grade.property("diem_he_4") is None:
-                continue
-            hop_le_tc, _ = self.kiem_tra_tin_chi(txt_tc.text())
-            diem = self._doc_so(txt_sc.text())
-            if not hop_le_tc or diem is None:
-                continue
-            ds.append((self._doc_so(txt_tc.text()), diem))
-        return ds
-
     def tinh_gpa_hien_tai(self):
-        """Tính tổng tín chỉ, GPA và tô sáng chip thang điểm tương ứng"""
+        """Tính tổng tín chỉ và GPA (thang 10), cập nhật xếp loại"""
         ds_mon = self.lay_du_lieu_mon()
         tong_tc_toan_bo = sum(mon["tin_chi"] for mon in ds_mon)
 
-        # GPA hệ 4 dùng để xếp loại và tính điểm cần đạt
-        ds_he_4 = [(m["tin_chi"], m["diem"]) for m in ds_mon if m["diem"] is not None]
-        tong_tc_co_diem, _, gpa = self.tinh_gpa_theo_diem(ds_he_4)
-
-        # GPA hiển thị: theo hệ người dùng đang chọn
-        if self.che_do_diem == "HE_10":
-            _, _, gpa_hien_thi = self.tinh_gpa_theo_diem(self._lay_diem_goc_theo_he_dang_chon())
-            self.lbl_thang_diem.setText("10.00")
-        else:
-            gpa_hien_thi = gpa
-            self.lbl_thang_diem.setText("4.00")
+        ds_co_diem = [(m["tin_chi"], m["diem"]) for m in ds_mon if m["diem"] is not None]
+        tong_tc_co_diem, _, gpa = self.tinh_gpa_theo_diem(ds_co_diem)
 
         tc_text = str(int(tong_tc_toan_bo)) if float(tong_tc_toan_bo).is_integer() else f"{tong_tc_toan_bo:.1f}"
         self.lbl_tong_tin_chi.setText(tc_text)
-        self.lbl_gpa_hien_tai.setText(f"{gpa_hien_thi:.2f}")
+        self.lbl_gpa_hien_tai.setText(f"{gpa:.2f}")
 
         if tong_tc_co_diem == 0:
             self.lbl_trang_thai_gpa.setText("Chưa có điểm")
             self.lbl_dong_vien.setText("Nhập điểm các môn để xem GPA của bạn.")
-            self._cap_nhat_chip_chon(None)
         else:
-            for nguong, chi_so, xep_loai, loi in self.BAC_GPA:
+            for nguong, xep_loai, loi in self.BAC_GPA:
                 if gpa >= nguong:
                     self.lbl_trang_thai_gpa.setText(f"Xếp loại: {xep_loai}")
                     self.lbl_dong_vien.setText(loi)
-                    self._cap_nhat_chip_chon(chi_so)
                     break
 
         self.tinh_diem_can_dat()
@@ -1060,22 +878,12 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         self.lbl_diem_can_dat.setText(text)
         self.lbl_diem_can_dat.setStyleSheet(f"color: {mau}; font-size: 12px; font-weight: 700;")
 
-    def _he10_sang_he4(self, diem10: float) -> float:
-        """Đổi điểm thang 10 sang thang 4 theo bảng quy chế (lấy theo mốc cận dưới)"""
-        for diem4, _, can_duoi in self.BANG_QUY_DOI:
-            if diem10 >= can_duoi:
-                return diem4
-        return 0.0
-
     def tinh_diem_can_dat(self):
         """
-        GPA mục tiêu được hiểu theo thang điểm đang chọn (Hệ 10: 0-10, Hệ 4: 0-4).
-        Tính điểm trung bình tối thiểu cần đạt ở các môn CHƯA có điểm (ô điểm để trống),
-        kết quả hiển thị cùng thang điểm với mục tiêu.
+        GPA mục tiêu theo thang 10 (0-10).
+        Tính điểm trung bình tối thiểu cần đạt ở các môn CHƯA có điểm (ô điểm để trống).
         """
-        he10 = self.che_do_diem == "HE_10"
-        toi_da = self.DIEM_TOI_DA[self.che_do_diem]
-        ten_he = "10" if he10 else "4"
+        toi_da = self.DIEM_TOI_DA
 
         muc_tieu = self._doc_so(self.txt_gpa_muc_tieu.text())
         if not self.txt_gpa_muc_tieu.text().strip():
@@ -1086,15 +894,12 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
             return
         if muc_tieu < 0 or muc_tieu > toi_da:
             self._hien_thi_muc_tieu(
-                f"GPA mục tiêu thang {ten_he} chỉ được từ 0 đến {toi_da:g}.", "#D92D20")
+                f"GPA mục tiêu chỉ được từ 0 đến {toi_da:g}.", "#D92D20")
             return
 
         ds_mon = self.lay_du_lieu_mon()
         tc_chua = sum(m["tin_chi"] for m in ds_mon if m["diem"] is None)
-        if he10:
-            ds_co_diem = self._lay_diem_goc_theo_he_dang_chon()
-        else:
-            ds_co_diem = [(m["tin_chi"], m["diem"]) for m in ds_mon if m["diem"] is not None]
+        ds_co_diem = [(m["tin_chi"], m["diem"]) for m in ds_mon if m["diem"] is not None]
         tc_co_diem, tong_diem, _ = self.tinh_gpa_theo_diem(ds_co_diem)
         tong_tc = tc_co_diem + tc_chua
 
@@ -1122,9 +927,9 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
         elif can_dat <= 0:
             self._hien_thi_muc_tieu(
                 "Chắc chắn đạt mục tiêu, kể cả khi các môn còn lại điểm thấp.", "#1E5FCC")
-        elif he10:
+        else:
             hang = "F"
-            for _, chu, can_duoi in self.BANG_QUY_DOI:
+            for can_duoi, chu, _ in self.BANG_DIEM_CHU:
                 if can_dat >= can_duoi - 1e-9:
                     hang = chu
                     break
@@ -1132,35 +937,3 @@ class MainScreen_Ext(QMainWindow, Ui_MainScreen):
                 f"Cần TB tối thiểu {can_dat:.2f}/10.00 (≈ hạng {hang}) "
                 f"cho {tc_chua_txt} tín chỉ còn lại:\n"
                 + self._liet_ke_mon_con_lai(ds_mon, can_dat, "/10.00"), "#16181E")
-        else:
-            hang, can_duoi = "A+", 9.0
-            for diem4, chu, lo in reversed(self.BANG_QUY_DOI):
-                if diem4 >= can_dat - 1e-9:
-                    hang, can_duoi = chu, lo
-                    break
-            self._hien_thi_muc_tieu(
-                f"Cần TB tối thiểu {can_dat:.2f}/4.00 (≈ hạng {hang}, từ {can_duoi:.1f}/10) "
-                f"cho {tc_chua_txt} tín chỉ còn lại:\n"
-                + self._liet_ke_mon_con_lai(ds_mon, can_dat, "/4.00"), "#16181E")
-
-    def _cap_nhat_card_scale_he_10(self):
-        """Cập nhật ghi chú thang điểm quy đổi theo thang 10 chuẩn trường"""
-        self.lbl_p_1.setText("4.0 (≥9.0)")
-        self.lbl_p_2.setText("3.5 (8.0-8.9)")
-        self.lbl_p_3.setText("3.0 (7.0-7.9)")
-        self.lbl_p_4.setText("2.5 (6.0-6.9)")
-        self.lbl_p_5.setText("2.0 (5.0-5.9)")
-        self.lbl_p_6.setText("1.5 (4.0-4.9)")
-        self.lbl_p_7.setText("1.0 (3.0-3.9)")
-        self.lbl_p_8.setText("0.0 (<3.0)")
-
-    def _cap_nhat_card_scale_he_4(self):
-        """Cập nhật ghi chú thang điểm quy đổi khi chọn hệ 4"""
-        self.lbl_p_1.setText("4.0 (≥3.8)")
-        self.lbl_p_2.setText("3.5 (3.4-3.7)")
-        self.lbl_p_3.setText("3.0 (2.9-3.3)")
-        self.lbl_p_4.setText("2.5 (2.4-2.8)")
-        self.lbl_p_5.setText("2.0 (1.9-2.3)")
-        self.lbl_p_6.setText("1.5 (1.4-1.8)")
-        self.lbl_p_7.setText("1.0 (0.9-1.3)")
-        self.lbl_p_8.setText("0.0 (<0.9)")

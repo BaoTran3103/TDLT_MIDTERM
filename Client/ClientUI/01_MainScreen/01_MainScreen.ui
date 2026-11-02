@@ -27,7 +27,7 @@ QMainWindow, QWidget#centralwidget {
 }
 
 /* Cards */
-QFrame#card_courses, QFrame#card_scale {
+QFrame#card_courses {
     background-color: #FFFFFF;
     border: 1px solid #E6ECF5;
     border-radius: 26px;
@@ -72,17 +72,6 @@ QLineEdit#txt_gpa_muc_tieu {
 }
 QLineEdit#txt_gpa_muc_tieu:focus { border: 2px solid #16181E; background-color: #FFFFFF; }
 
-/* Pill switch */
-QPushButton#btn_he_10, QPushButton#btn_he_4 {
-    border-radius: 18px; font-size: 12px; font-weight: 700; padding: 8px 20px;
-    border: 1.5px solid #E1E8F3; background-color: #F4F7FB; color: #4B5565;
-}
-QPushButton#btn_he_10:hover, QPushButton#btn_he_4:hover { border-color: #2D7BF3; color: #2D7BF3; }
-QPushButton#btn_he_10:checked, QPushButton#btn_he_4:checked {
-    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #2D7BF3, stop:1 #6FA8F9);
-    border-color: #2D7BF3; color: #FFFFFF;
-}
-
 /* Action buttons */
 QPushButton#btn_them_mon {
     background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #2D7BF3, stop:1 #5B9BF8);
@@ -100,16 +89,6 @@ QPushButton#btn_xoa_mon {
     text-align: center;
 }
 QPushButton#btn_xoa_mon:hover { background-color: #EAF3FF; border-color: #2D7BF3; }
-
-/* Scale chips */
-QFrame#scale_box_1, QFrame#scale_box_2, QFrame#scale_box_3, QFrame#scale_box_4,
-QFrame#scale_box_5, QFrame#scale_box_6, QFrame#scale_box_7, QFrame#scale_box_8 {
-    background-color: #F4F7FB; border: 1px solid #E6ECF5; border-radius: 16px;
-}
-QFrame#scale_box_1 {
-    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #2D7BF3, stop:1 #5B9BF8);
-    border: none;
-}
 
 /* Summary card (on blue) */
 QLabel#lbl_tieu_de_gpa { color: #FFFFFF; font-size: 15px; font-weight: 700; }
@@ -286,45 +265,6 @@ QLabel#lbl_cong_thuc { color: #FFFFFF; font-size: 12px; font-weight: 600; }
                </property>
               </spacer>
              </item>
-             <item>
-              <widget class="QLabel" name="lbl_chon_he">
-               <property name="styleSheet">
-                <string notr="true">font-size: 12px; font-weight: 600; color: #8A93A5;</string>
-               </property>
-               <property name="text">
-                <string>Thang điểm nhập:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btn_he_10">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="text">
-                <string>Hệ 10 (Thang 10)</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btn_he_4">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="text">
-                <string>Hệ 4 (Thang 4)</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
             </layout>
            </item>
            <item>
@@ -344,7 +284,7 @@ QLabel#lbl_cong_thuc { color: #FFFFFF; font-size: 12px; font-weight: 600; }
              </column>
              <column>
               <property name="text">
-               <string>Điểm số (Hệ 10)</string>
+               <string>Điểm số (Hệ 10: 0 - 10)</string>
               </property>
              </column>
              <column>
@@ -414,536 +354,6 @@ QLabel#lbl_cong_thuc { color: #FFFFFF; font-size: 12px; font-weight: 600; }
           </layout>
          </widget>
         </item>
-        <item>
-         <widget class="QFrame" name="card_scale">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>130</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>140</height>
-           </size>
-          </property>
-          <layout class="QVBoxLayout" name="card_scale_layout">
-           <property name="spacing">
-            <number>10</number>
-           </property>
-           <property name="leftMargin">
-            <number>22</number>
-           </property>
-           <property name="topMargin">
-            <number>14</number>
-           </property>
-           <property name="rightMargin">
-            <number>22</number>
-           </property>
-           <property name="bottomMargin">
-            <number>14</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="lbl_scale_title">
-             <property name="styleSheet">
-              <string notr="true">font-size: 13px; font-weight: 800; color: #16181E;</string>
-             </property>
-             <property name="text">
-              <string>Thang Điểm Quy Đổi (Theo Quy Chế Đào Tạo Trường)</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="scale_badges_layout">
-             <property name="spacing">
-              <number>8</number>
-             </property>
-             <item>
-              <widget class="QFrame" name="scale_box_1">
-               <layout class="QVBoxLayout" name="scale_layout_1">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <property name="leftMargin">
-                 <number>4</number>
-                </property>
-                <property name="topMargin">
-                 <number>6</number>
-                </property>
-                <property name="rightMargin">
-                 <number>4</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="lbl_g_1">
-                  <property name="styleSheet">
-                   <string notr="true">font-weight: 800; font-size: 14px; color: #CCE5FF;</string>
-                  </property>
-                  <property name="text">
-                   <string>A+</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_p_1">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 11px; font-weight: 600; color: #FFFFFF;</string>
-                  </property>
-                  <property name="text">
-                   <string>4.0 (≥9.0)</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_t_1">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 10px; color: #DCEBFF;</string>
-                  </property>
-                  <property name="text">
-                   <string>Xuất sắc</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="scale_box_2">
-               <layout class="QVBoxLayout" name="scale_layout_2">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <property name="leftMargin">
-                 <number>4</number>
-                </property>
-                <property name="topMargin">
-                 <number>6</number>
-                </property>
-                <property name="rightMargin">
-                 <number>4</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="lbl_g_2">
-                  <property name="styleSheet">
-                   <string notr="true">font-weight: 800; font-size: 14px; color: #2D7BF3;</string>
-                  </property>
-                  <property name="text">
-                   <string>A</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_p_2">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 11px; font-weight: 600; color: #16181E;</string>
-                  </property>
-                  <property name="text">
-                   <string>3.5 (8.0-8.9)</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_t_2">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 10px; color: #8A93A5;</string>
-                  </property>
-                  <property name="text">
-                   <string>Giỏi</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="scale_box_3">
-               <layout class="QVBoxLayout" name="scale_layout_3">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <property name="leftMargin">
-                 <number>4</number>
-                </property>
-                <property name="topMargin">
-                 <number>6</number>
-                </property>
-                <property name="rightMargin">
-                 <number>4</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="lbl_g_3">
-                  <property name="styleSheet">
-                   <string notr="true">font-weight: 800; font-size: 14px; color: #3F83E8;</string>
-                  </property>
-                  <property name="text">
-                   <string>B+</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_p_3">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 11px; font-weight: 600; color: #16181E;</string>
-                  </property>
-                  <property name="text">
-                   <string>3.0 (7.0-7.9)</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_t_3">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 10px; color: #8A93A5;</string>
-                  </property>
-                  <property name="text">
-                   <string>Khá</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="scale_box_4">
-               <layout class="QVBoxLayout" name="scale_layout_4">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <property name="leftMargin">
-                 <number>4</number>
-                </property>
-                <property name="topMargin">
-                 <number>6</number>
-                </property>
-                <property name="rightMargin">
-                 <number>4</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="lbl_g_4">
-                  <property name="styleSheet">
-                   <string notr="true">font-weight: 800; font-size: 14px; color: #5A8FD6;</string>
-                  </property>
-                  <property name="text">
-                   <string>B</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_p_4">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 11px; font-weight: 600; color: #16181E;</string>
-                  </property>
-                  <property name="text">
-                   <string>2.5 (6.0-6.9)</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_t_4">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 10px; color: #8A93A5;</string>
-                  </property>
-                  <property name="text">
-                   <string>TB khá</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="scale_box_5">
-               <layout class="QVBoxLayout" name="scale_layout_5">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <property name="leftMargin">
-                 <number>4</number>
-                </property>
-                <property name="topMargin">
-                 <number>6</number>
-                </property>
-                <property name="rightMargin">
-                 <number>4</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="lbl_g_5">
-                  <property name="styleSheet">
-                   <string notr="true">font-weight: 800; font-size: 14px; color: #6E7F99;</string>
-                  </property>
-                  <property name="text">
-                   <string>C</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_p_5">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 11px; font-weight: 600; color: #16181E;</string>
-                  </property>
-                  <property name="text">
-                   <string>2.0 (5.0-5.9)</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_t_5">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 10px; color: #8A93A5;</string>
-                  </property>
-                  <property name="text">
-                   <string>Trung bình</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="scale_box_6">
-               <layout class="QVBoxLayout" name="scale_layout_6">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <property name="leftMargin">
-                 <number>4</number>
-                </property>
-                <property name="topMargin">
-                 <number>6</number>
-                </property>
-                <property name="rightMargin">
-                 <number>4</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="lbl_g_6">
-                  <property name="styleSheet">
-                   <string notr="true">font-weight: 800; font-size: 14px; color: #69758C;</string>
-                  </property>
-                  <property name="text">
-                   <string>D+</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_p_6">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 11px; font-weight: 600; color: #16181E;</string>
-                  </property>
-                  <property name="text">
-                   <string>1.5 (4.0-4.9)</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_t_6">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 10px; color: #8A93A5;</string>
-                  </property>
-                  <property name="text">
-                   <string>Yếu</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="scale_box_7">
-               <layout class="QVBoxLayout" name="scale_layout_7">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <property name="leftMargin">
-                 <number>4</number>
-                </property>
-                <property name="topMargin">
-                 <number>6</number>
-                </property>
-                <property name="rightMargin">
-                 <number>4</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="lbl_g_7">
-                  <property name="styleSheet">
-                   <string notr="true">font-weight: 800; font-size: 14px; color: #5B6578;</string>
-                  </property>
-                  <property name="text">
-                   <string>D</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_p_7">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 11px; font-weight: 600; color: #16181E;</string>
-                  </property>
-                  <property name="text">
-                   <string>1.0 (3.0-3.9)</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_t_7">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 10px; color: #8A93A5;</string>
-                  </property>
-                  <property name="text">
-                   <string>Kém</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="scale_box_8">
-               <layout class="QVBoxLayout" name="scale_layout_8">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <property name="leftMargin">
-                 <number>4</number>
-                </property>
-                <property name="topMargin">
-                 <number>6</number>
-                </property>
-                <property name="rightMargin">
-                 <number>4</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="lbl_g_8">
-                  <property name="styleSheet">
-                   <string notr="true">font-weight: 800; font-size: 14px; color: #16181E;</string>
-                  </property>
-                  <property name="text">
-                   <string>F</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_p_8">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 11px; font-weight: 600; color: #16181E;</string>
-                  </property>
-                  <property name="text">
-                   <string>0.0 (&lt;3.0)</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lbl_t_8">
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 10px; color: #8A93A5;</string>
-                  </property>
-                  <property name="text">
-                   <string>Kém</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>
@@ -989,7 +399,7 @@ QLabel#lbl_cong_thuc { color: #FFFFFF; font-size: 12px; font-weight: 600; }
          <item>
           <widget class="QLabel" name="lbl_gpa_hien_tai">
            <property name="text">
-            <string>3.42</string>
+            <string>8.12</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -1092,7 +502,7 @@ QLabel#lbl_cong_thuc { color: #FFFFFF; font-size: 12px; font-weight: 600; }
             <item>
              <widget class="QLabel" name="lbl_tong_tin_chi">
               <property name="text">
-               <string>17</string>
+               <string>10</string>
               </property>
              </widget>
             </item>
@@ -1168,7 +578,7 @@ QLabel#lbl_cong_thuc { color: #FFFFFF; font-size: 12px; font-weight: 600; }
             <item>
              <widget class="QLabel" name="lbl_thang_diem">
               <property name="text">
-               <string>4.00</string>
+               <string>10.00</string>
               </property>
              </widget>
             </item>
@@ -1245,7 +655,7 @@ QLabel#lbl_cong_thuc { color: #FFFFFF; font-size: 12px; font-weight: 600; }
               </size>
              </property>
              <property name="placeholderText">
-              <string>Ví dụ: 3.20 (thang 4) hoặc 8.0 (thang 10)</string>
+              <string>Ví dụ: 8.0 (tối đa 10)</string>
              </property>
             </widget>
            </item>
@@ -1336,7 +746,7 @@ QLabel#lbl_cong_thuc { color: #FFFFFF; font-size: 12px; font-weight: 600; }
             <item>
              <widget class="QLabel" name="lbl_cong_thuc">
               <property name="text">
-               <string>Công thức: GPA = ∑(Điểm hệ 4 × Số tín chỉ) / Tổng số tín chỉ</string>
+               <string>Công thức: GPA = ∑(Điểm hệ 10 × Số tín chỉ) / Tổng số tín chỉ</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
